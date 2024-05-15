@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "340514439542",
+    "project_id": "swayam-9b4c4",
+    "storage_bucket": "swayam-9b4c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340514439542:android:ea69989e07e56af1897a57",
+        "android_client_info": {
+          "package_name": "com.example.swayam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS-Zp6eAS83shziDF39oKAEEyk3C0QjMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
