@@ -12,6 +12,9 @@ class AuthMethods{
     required String email,
     required String password,
     required String username,
+    required String weight,
+    required String height,
+    required String age,
     // required Uint8List file,
   }) async {
     String res = "Some error Occurred";
