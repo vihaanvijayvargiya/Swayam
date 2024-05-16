@@ -5,7 +5,7 @@ class ContactsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text("Contacts Page"),
+        child: Text("Emergency Contacts"),
       ),
     );
   }
