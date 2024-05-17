@@ -54,7 +54,44 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Widgets for ECG, Heart Rate, and SpO2
+            Container(
+              height: MediaQuery.of(context).size.height / 2, // Half of the screen
+              color: Colors.blue,
+              child: Row(
+                children: [
+                  Icon(Icons.favorite, color: Colors.white), // ECG icon
+                  Text('ECG', style: TextStyle(color: Colors.white)), // ECG text
+                ],
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height / 4, // 1/4 of the screen
+              color: Colors.red,
+              child: Row(
+                children: [
+                  Icon(Icons.favorite, color: Colors.white), // Heart rate icon
+                  Text('Heart Rate', style: TextStyle(color: Colors.white)), // Heart rate text
+                ],
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height / 4, // 1/4 of the screen
+              color: Colors.green,
+              child: Row(
+                children: [
+                  Icon(Icons.favorite, color: Colors.white), // SpO2 icon
+                  Text('SpO2', style: TextStyle(color: Colors.white)), // SpO2 text
+                ],
+              ),
+            ),
+            // End of widgets for ECG, Heart Rate, and SpO2
+          ],
+        ),
+      ),
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Container(
