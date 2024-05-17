@@ -18,19 +18,26 @@ class InputText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final inputBorder = OutlineInputBorder(
-      borderSide: Divider.createBorderSide(context),
-    );
     return TextField(
       controller: controller,
-      decoration: InputDecoration(
-          hintText: hint,
-          label: Text(hint),
-          border: inputBorder,
-          contentPadding: EdgeInsets.all(8)
-      ),
       keyboardType: textInputType,
-      obscureText: ispass ? true : false,
+      obscureText: ispass,
+      decoration: InputDecoration(
+        hintText: hint,
+        filled: true,
+        fillColor: Colors.white, // Background color remains white
+        prefixIcon: icon,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20), // Circular shape
+          borderSide: BorderSide(color: Colors.grey, width: 2),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.teal, width: 2), // Teal color when focused
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      ),
+      style: TextStyle(color: Colors.black), // Text color
     );
   }
 }

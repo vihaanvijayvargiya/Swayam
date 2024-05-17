@@ -99,14 +99,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 InkWell(
                   onTap: loginUser,
                   child: Container(
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: const ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      color: Colors.deepPurple,
+                      color: Color(0xFF008080),
                     ),
                     child: !_isLoading
                         ? const Text(
@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: const Text(
                           ' Signup.',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,color: Colors.deepPurple
+                              fontWeight: FontWeight.bold,color: Color(0xFF008080)
                           ),
                         ),
                       ),

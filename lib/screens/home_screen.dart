@@ -1,14 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:swayam/screens/privacy_policy.dart';
-import 'package:swayam/screens/send_feedback.dart';
-import 'package:swayam/screens/settings.dart';
+import 'package:swayam/screens/logout.dart';
 import 'package:swayam/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:swayam/screens/my_drawer_header.dart';
-import 'contacts.dart';
-import 'dashboard.dart';
-import 'events.dart';
-import 'notes.dart';
+import 'emergency.dart';
+import 'profile.dart';
+import 'about.dart';
 import 'notifications.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,32 +16,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var currentPage = DrawerSections.dashboard;
+  var currentPage = DrawerSections.home;
 
   @override
   Widget build(BuildContext context) {
     var container;
-    if (currentPage == DrawerSections.dashboard) {
-      container = DashboardPage();
-    } else if (currentPage == DrawerSections.contacts) {
-      container = ContactsPage();
-    } else if (currentPage == DrawerSections.events) {
-      container = EventsPage();
-    } else if (currentPage == DrawerSections.notes) {
-      container = NotesPage();
-    } else if (currentPage == DrawerSections.settings) {
-      container = SettingsPage();
+    if (currentPage == DrawerSections.home) {
+      container = HomeContent();
+    } else if (currentPage == DrawerSections.profile) {
+      container = ProfilePage();
     } else if (currentPage == DrawerSections.notifications) {
       container = NotificationsPage();
-    } else if (currentPage == DrawerSections.privacy_policy) {
-      container = PrivacyPolicyPage();
-    } else if (currentPage == DrawerSections.send_feedback) {
-      container = SendFeedbackPage();
+    } else if (currentPage == DrawerSections.contacts) {
+      container = Emergency();
+    } else if (currentPage == DrawerSections.about) {
+      container = AboutPage();
+    } else if (currentPage == DrawerSections.logout) {
+      container = LoginScreen();
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[700],
-        title: Text("Swayam"),
+        backgroundColor: Color(0xFF008080),
+        title: Text(
+          "Swayam",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: container,
       drawer: Drawer(
@@ -70,24 +70,19 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         // shows the list of menu drawer
         children: [
-          menuItem(1, "Dashboard", Icons.dashboard_outlined,
-              currentPage == DrawerSections.dashboard ? true : false),
-          menuItem(2, "Contacts", Icons.people_alt_outlined,
-              currentPage == DrawerSections.contacts ? true : false),
-          menuItem(3, "Events", Icons.event,
-              currentPage == DrawerSections.events ? true : false),
-          menuItem(4, "Notes", Icons.notes,
-              currentPage == DrawerSections.notes ? true : false),
-          Divider(),
-          menuItem(5, "Settings", Icons.settings_outlined,
-              currentPage == DrawerSections.settings ? true : false),
-          menuItem(6, "Notifications", Icons.notifications_outlined,
+          menuItem(1, "Home", Icons.home,
+              currentPage == DrawerSections.home ? true : false),
+          menuItem(2, "Profile", Icons.people_alt_outlined,
+              currentPage == DrawerSections.profile ? true : false),
+          menuItem(3, "Notifications", Icons.notifications_outlined,
               currentPage == DrawerSections.notifications ? true : false),
           Divider(),
-          menuItem(7, "Privacy policy", Icons.privacy_tip_outlined,
-              currentPage == DrawerSections.privacy_policy ? true : false),
-          menuItem(8, "Send feedback", Icons.feedback_outlined,
-              currentPage == DrawerSections.send_feedback ? true : false),
+          menuItem(4, "Emergency Service", Icons.contact_phone_sharp,
+              currentPage == DrawerSections.contacts ? true : false),
+          menuItem(5, "About", Icons.info,
+              currentPage == DrawerSections.about ? true : false),
+          menuItem(6, "Logout", Icons.logout,
+              currentPage == DrawerSections.logout ? true : false),
         ],
       ),
     );
@@ -101,21 +96,17 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.pop(context);
           setState(() {
             if (id == 1) {
-              currentPage = DrawerSections.dashboard;
+              currentPage = DrawerSections.home;
             } else if (id == 2) {
-              currentPage = DrawerSections.contacts;
+              currentPage = DrawerSections.profile;
             } else if (id == 3) {
-              currentPage = DrawerSections.events;
-            } else if (id == 4) {
-              currentPage = DrawerSections.notes;
-            } else if (id == 5) {
-              currentPage = DrawerSections.settings;
-            } else if (id == 6) {
               currentPage = DrawerSections.notifications;
-            } else if (id == 7) {
-              currentPage = DrawerSections.privacy_policy;
-            } else if (id == 8) {
-              currentPage = DrawerSections.send_feedback;
+            } else if (id == 4) {
+              currentPage = DrawerSections.contacts;
+            } else if (id == 5) {
+              currentPage = DrawerSections.about;
+            } else if (id == 6) {
+              currentPage = DrawerSections.logout;
             }
           });
         },
@@ -149,12 +140,19 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 enum DrawerSections {
-  dashboard,
-  contacts,
-  events,
-  notes,
-  settings,
+  home,
+  profile,
   notifications,
-  privacy_policy,
-  send_feedback,
+  contacts,
+  about,
+  logout,
+}
+
+class HomeContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Home Content'),
+    );
+  }
 }

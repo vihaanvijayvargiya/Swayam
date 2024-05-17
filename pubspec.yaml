@@ -41,6 +41,10 @@ dependencies:
   firebase_storage: ^11.7.5
   uuid: ^4.4.0
   fluttertoast: ^8.2.5
+  url_launcher: ^6.0.13
+  maps_launcher: ^2.2.1
+  keyboard_hider: ^0.1.0
+  flutter_inappwebview: ^5.0.0
 
 dev_dependencies:
   flutter_test:

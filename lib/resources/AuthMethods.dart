@@ -1,13 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
-
-class AuthMethods{
+class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   Future<String> signUpUser({
     required String email,
     required String password,
@@ -15,39 +12,35 @@ class AuthMethods{
     required String weight,
     required String height,
     required String age,
-    // required Uint8List file,
   }) async {
-    String res = "Some error Occurred";
+    String res = "Some error occurred";
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          username.isNotEmpty ){
+      if (email.isNotEmpty &&
+          password.isNotEmpty &&
+          username.isNotEmpty &&
+          weight.isNotEmpty &&
+          height.isNotEmpty &&
+          age.isNotEmpty) {
 
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        // String photoUrl =
-        // await StorageMethods().uploadImageToStorage('profilePics', file);
-
-        await _firestore
-            .collection("admin")
-            .doc(cred.user!.uid)
-            .set({
-          'username':username,
-          'email':email,
-          'password':password,
-          // 'profile':photoUrl,
+        await _firestore.collection("users").doc(cred.user!.uid).set({
+          'username': username,
+          'email': email,
+          'weight': weight,
+          'height': height,
+          'age': age,
         });
 
         res = "success";
-        return res;
       } else {
         res = "Please enter all the fields";
       }
     } catch (err) {
-      return err.toString();
+      res = err.toString();
     }
     return res;
   }
@@ -56,10 +49,9 @@ class AuthMethods{
     required String email,
     required String password,
   }) async {
-    String res = "Some error Occurred";
+    String res = "Some error occurred";
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
-
+      if (email.isNotEmpty && password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
@@ -69,13 +61,12 @@ class AuthMethods{
         res = "Please enter all the fields";
       }
     } catch (err) {
-      return err.toString();
+      res = err.toString();
     }
     return res;
   }
 
-  Future<void> signOut(BuildContext context) async {
+  Future<void> signOut() async {
     await _auth.signOut();
-
   }
 }
