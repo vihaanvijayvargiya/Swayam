@@ -1,12 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:swayam/screens/logout.dart';
-import 'package:swayam/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:swayam/screens/emergency.dart';
+import 'package:swayam/screens/medbot.dart';
 import 'package:swayam/screens/my_drawer_header.dart';
-import 'emergency.dart';
-import 'profile.dart';
-import 'about.dart';
-import 'notifications.dart';
+import 'package:swayam/screens/about.dart';
+import 'package:swayam/screens/notifications.dart';
+import 'package:swayam/screens/profile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,23 +15,33 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var currentPage = DrawerSections.home;
+  int _selectedIndex = 1; // Set initial index to Home
+
+  static List<Widget> _widgetOptions = <Widget>[
+    MedBotPage(),
+    HomeContent(),
+    Emergency(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      switch (index) {
+        case 0:
+          currentPage = DrawerSections.medbot;
+          break;
+        case 1:
+          currentPage = DrawerSections.home;
+          break;
+        case 2:
+          currentPage = DrawerSections.contacts;
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var container;
-    if (currentPage == DrawerSections.home) {
-      container = HomeContent();
-    } else if (currentPage == DrawerSections.profile) {
-      container = ProfilePage();
-    } else if (currentPage == DrawerSections.notifications) {
-      container = NotificationsPage();
-    } else if (currentPage == DrawerSections.contacts) {
-      container = Emergency();
-    } else if (currentPage == DrawerSections.about) {
-      container = AboutPage();
-    } else if (currentPage == DrawerSections.logout) {
-      container = LoginScreen();
-    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF008080),
@@ -46,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
       ),
-      body: container,
+      body: _widgetOptions.elementAt(_selectedIndex),
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Container(
@@ -59,6 +67,25 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Med Bot',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.phone),
+            label: 'Emergency',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
+      ),
     );
   }
 
@@ -68,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
         top: 15,
       ),
       child: Column(
-        // shows the list of menu drawer
         children: [
           menuItem(1, "Home", Icons.home,
               currentPage == DrawerSections.home ? true : false),
@@ -97,12 +123,15 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             if (id == 1) {
               currentPage = DrawerSections.home;
+              _selectedIndex = 1;
             } else if (id == 2) {
               currentPage = DrawerSections.profile;
+              _selectedIndex = 2;
             } else if (id == 3) {
               currentPage = DrawerSections.notifications;
             } else if (id == 4) {
               currentPage = DrawerSections.contacts;
+              _selectedIndex = 0;
             } else if (id == 5) {
               currentPage = DrawerSections.about;
             } else if (id == 6) {
@@ -145,7 +174,7 @@ enum DrawerSections {
   notifications,
   contacts,
   about,
-  logout,
+  logout, medbot,
 }
 
 class HomeContent extends StatelessWidget {
