@@ -10,7 +10,7 @@ class MedBotPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 20, bottom: 10),
           child: Center(
             child: Text(
-              'MedBot',
+              'Sarthi - Medical Bot',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
