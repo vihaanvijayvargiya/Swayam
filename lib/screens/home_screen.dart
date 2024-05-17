@@ -194,7 +194,7 @@ enum DrawerSections {
   contacts,
   about,
   logout,
-  sarthi, // Added Sarthi enum
+  sarthi,
 }
 
 class HomeContent extends StatelessWidget {
