@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:swayam/screens/logout.dart';
+import 'package:swayam/screens/medbot.dart'; // Make sure this import is correct
+import 'package:swayam/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:swayam/screens/emergency.dart';
-import 'package:swayam/screens/medbot.dart';
 import 'package:swayam/screens/my_drawer_header.dart';
-import 'package:swayam/screens/about.dart';
-import 'package:swayam/screens/notifications.dart';
-import 'package:swayam/screens/profile.dart';
+import 'emergency.dart';
+import 'profile.dart';
+import 'about.dart';
+import 'notifications.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,9 +18,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var currentPage = DrawerSections.home;
-  int _selectedIndex = 1; // Set initial index to Home
+  int _selectedIndex = 1;
 
-  static List<Widget> _widgetOptions = <Widget>[
+  List<Widget> _pages = [
     MedBotPage(),
     HomeContent(),
     Emergency(),
@@ -26,22 +29,43 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      switch (index) {
-        case 0:
-          currentPage = DrawerSections.medbot;
-          break;
-        case 1:
-          currentPage = DrawerSections.home;
-          break;
-        case 2:
-          currentPage = DrawerSections.contacts;
-          break;
+      if (index == 0) {
+        currentPage = DrawerSections.sarthi;
+      } else if (index == 1) {
+        currentPage = DrawerSections.home;
+      } else if (index == 2) {
+        currentPage = DrawerSections.contacts;
+      }
+    });
+  }
+
+  void _onDrawerItemTapped(DrawerSections section) {
+    setState(() {
+      currentPage = section;
+      if (section == DrawerSections.home) {
+        _selectedIndex = 1;
+      } else if (section == DrawerSections.sarthi) {
+        _selectedIndex = 0;
+      } else if (section == DrawerSections.contacts) {
+        _selectedIndex = 2;
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var container = _pages[_selectedIndex];
+
+    if (currentPage == DrawerSections.profile) {
+      container = ProfilePage();
+    } else if (currentPage == DrawerSections.notifications) {
+      container = NotificationsPage();
+    } else if (currentPage == DrawerSections.about) {
+      container = AboutPage();
+    } else if (currentPage == DrawerSections.logout) {
+      container = LoginScreen();
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF008080),
@@ -54,44 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Widgets for ECG, Heart Rate, and SpO2
-            Container(
-              height: MediaQuery.of(context).size.height / 2, // Half of the screen
-              color: Colors.blue,
-              child: Row(
-                children: [
-                  Icon(Icons.favorite, color: Colors.white), // ECG icon
-                  Text('ECG', style: TextStyle(color: Colors.white)), // ECG text
-                ],
-              ),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height / 4, // 1/4 of the screen
-              color: Colors.red,
-              child: Row(
-                children: [
-                  Icon(Icons.favorite, color: Colors.white), // Heart rate icon
-                  Text('Heart Rate', style: TextStyle(color: Colors.white)), // Heart rate text
-                ],
-              ),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height / 4, // 1/4 of the screen
-              color: Colors.green,
-              child: Row(
-                children: [
-                  Icon(Icons.favorite, color: Colors.white), // SpO2 icon
-                  Text('SpO2', style: TextStyle(color: Colors.white)), // SpO2 text
-                ],
-              ),
-            ),
-            // End of widgets for ECG, Heart Rate, and SpO2
-          ],
-        ),
-      ),
+      body: container,
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Container(
@@ -107,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+            icon: Icon(Icons.medical_services),
             label: 'Sarthi',
           ),
           BottomNavigationBarItem(
@@ -115,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.phone),
+            icon: Icon(Icons.contact_phone_sharp),
             label: 'Emergency',
           ),
         ],
@@ -157,24 +144,19 @@ class _HomeScreenState extends State<HomeScreen> {
       child: InkWell(
         onTap: () {
           Navigator.pop(context);
-          setState(() {
-            if (id == 1) {
-              currentPage = DrawerSections.home;
-              _selectedIndex = 1;
-            } else if (id == 2) {
-              currentPage = DrawerSections.profile;
-              _selectedIndex = 2;
-            } else if (id == 3) {
-              currentPage = DrawerSections.notifications;
-            } else if (id == 4) {
-              currentPage = DrawerSections.contacts;
-              _selectedIndex = 0;
-            } else if (id == 5) {
-              currentPage = DrawerSections.about;
-            } else if (id == 6) {
-              currentPage = DrawerSections.logout;
-            }
-          });
+          if (id == 1) {
+            _onDrawerItemTapped(DrawerSections.home);
+          } else if (id == 2) {
+            _onDrawerItemTapped(DrawerSections.profile);
+          } else if (id == 3) {
+            _onDrawerItemTapped(DrawerSections.notifications);
+          } else if (id == 4) {
+            _onDrawerItemTapped(DrawerSections.contacts);
+          } else if (id == 5) {
+            _onDrawerItemTapped(DrawerSections.about);
+          } else if (id == 6) {
+            _onDrawerItemTapped(DrawerSections.logout);
+          }
         },
         child: Padding(
           padding: EdgeInsets.all(15.0),
@@ -211,7 +193,8 @@ enum DrawerSections {
   notifications,
   contacts,
   about,
-  logout, medbot,
+  logout,
+  sarthi, // Added Sarthi enum
 }
 
 class HomeContent extends StatelessWidget {

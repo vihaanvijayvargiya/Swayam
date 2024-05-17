@@ -22,7 +22,7 @@ class AboutPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Swayam is a IoT device that ',
+              'Swayam – your personal health guardian. Swayam is like having a smart assistant that keeps an eye on your heart, blood pressure, and oxygen levels all the time. It quickly detects any issues and notifies you and your doctor immediately. Our user-friendly app tracks your health over time, making health management easy and smart.',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 20),
@@ -32,7 +32,7 @@ class AboutPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Our mission is to promote mental health awareness and self-care practices to create a happier and healthier society.',
+              'Keep you healthy and alert. Using smart technology, it monitors your vital signs round the clock.It is like having a personal health guardian in your pocket, ensuring you stay ahead of health surprises.',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 20),
