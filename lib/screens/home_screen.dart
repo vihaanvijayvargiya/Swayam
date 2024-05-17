@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swayam/screens/logout.dart';
-import 'package:swayam/screens/medbot.dart'; // Make sure this import is correct
+import 'package:swayam/screens/medbot.dart';
 import 'package:swayam/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:swayam/screens/my_drawer_header.dart';
@@ -194,14 +194,108 @@ enum DrawerSections {
   contacts,
   about,
   logout,
-  sarthi,
+  sarthi, // Added Sarthi enum
 }
 
 class HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Home Content'),
+    return Column(
+      children: [
+        // ECG Widget - Half of the screen
+        Expanded(
+          flex: 2,
+          child: Container(
+            margin: EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.show_chart, size: 24), // Icon for ECG
+                    SizedBox(width: 8),
+                    Text(
+                      'ECG',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'The ECG from device will be shown here',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+        // Heart Rate Widget - 1/4 of the screen
+        Expanded(
+          flex: 1,
+          child: Container(
+            margin: EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.favorite, size: 24), // Icon for Heart Rate
+                    SizedBox(width: 8),
+                    Text(
+                      'Heart Rate',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'The heart rate from device will be shown here',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+        // SpO2 Widget - 1/4 of the screen
+        Expanded(
+          flex: 1,
+          child: Container(
+            margin: EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.opacity, size: 24), // Icon for SpO2
+                    SizedBox(width: 8),
+                    Text(
+                      'SpO2',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'The SpO2 from device will be shown here',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
