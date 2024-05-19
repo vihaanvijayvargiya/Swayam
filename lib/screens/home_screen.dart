@@ -4,10 +4,14 @@ import 'package:swayam/screens/medbot.dart';
 import 'package:swayam/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:swayam/screens/my_drawer_header.dart';
+import 'package:swayam/screens/consultDoctor/your_doctor.dart';
 import 'emergency.dart';
 import 'profile.dart';
 import 'about.dart';
 import 'notifications.dart';
+import 'ECG.dart';
+import 'pulse_rate.dart';
+import 'spo2.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -21,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 1;
 
   List<Widget> _pages = [
-    MedBotPage(),
+    YourDoctor(),
     HomeContent(),
     Emergency(),
   ];
@@ -91,11 +95,34 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(top: 10),
+        height: 64,
+        width: 64,
+        child: FloatingActionButton(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MedBotPage()),
+            );
+          },
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(width: 3, color: Colors.teal),
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: const Icon(
+            Icons.smart_toy,
+            color: Colors.teal,
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.medical_services),
-            label: 'Sarthi',
+            label: 'Doctor',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -205,93 +232,162 @@ class HomeContent extends StatelessWidget {
         // ECG Widget - Half of the screen
         Expanded(
           flex: 2,
-          child: Container(
-            margin: EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ECGScreen()),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.white, // Background color
+                borderRadius: BorderRadius.circular(15), // Rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1), // Shadow color
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // Shadow position
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.show_chart, size: 24), // Icon for ECG
-                    SizedBox(width: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.show_chart, size: 24), // Icon for ECG
+                        SizedBox(width: 8),
+                        Text(
+                          'ECG',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
                     Text(
-                      'ECG',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      'The ECG from device will be shown here',
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'The ECG from device will be shown here',
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
           ),
         ),
         // Heart Rate Widget - 1/4 of the screen
         Expanded(
           flex: 1,
-          child: Container(
-            margin: EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PulseRateScreen()),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.white, // Background color
+                borderRadius: BorderRadius.circular(15), // Rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1), // Shadow color
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // Shadow position
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.favorite, size: 24), // Icon for Heart Rate
-                    SizedBox(width: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.favorite, size: 24), // Icon for Heart Rate
+                        SizedBox(width: 8),
+                        Text(
+                          'Heart Rate',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
                     Text(
-                      'Heart Rate',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      'The heart rate from device will be shown here',
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'The heart rate from device will be shown here',
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
           ),
         ),
         // SpO2 Widget - 1/4 of the screen
         Expanded(
           flex: 1,
-          child: Container(
-            margin: EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SpO2Screen()),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.white, // Background color
+                borderRadius: BorderRadius.circular(15), // Rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1), // Shadow color
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // Shadow position
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.opacity, size: 24), // Icon for SpO2
-                    SizedBox(width: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.opacity, size: 24), // Icon for SpO2
+                        SizedBox(width: 8),
+                        Text(
+                          'SpO2',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
                     Text(
-                      'SpO2',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      'The SpO2 from device will be shown here',
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'The SpO2 from device will be shown here',
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
           ),
         ),

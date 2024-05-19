@@ -45,6 +45,8 @@ dependencies:
   maps_launcher: ^2.2.1
   keyboard_hider: ^0.1.0
   flutter_inappwebview: ^5.0.0
+  permission_handler: ^10.3.0
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_test:
