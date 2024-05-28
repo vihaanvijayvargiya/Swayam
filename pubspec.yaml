@@ -45,6 +45,10 @@ dependencies:
   maps_launcher: ^2.2.1
   keyboard_hider: ^0.1.0
   flutter_inappwebview: ^5.0.0
+  flutter_blue_plus: ^1.16.2
+  flutter_blue:
+  get: ^4.6.5
+  permission_handler:
 
 
 dev_dependencies:
