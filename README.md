@@ -1,6 +1,6 @@
 # swayam
 
-A new Flutter project.
+Flutter app for wearable ecg monitoring device.
 
 ## Getting Started
 
