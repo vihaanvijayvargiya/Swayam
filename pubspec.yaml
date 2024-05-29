@@ -46,7 +46,8 @@ dependencies:
   keyboard_hider: ^0.1.0
   flutter_inappwebview: ^5.0.0
   flutter_blue_plus: ^1.16.2
-  flutter_blue:
+  flutter_blue: ^0.8.0
+  shared_preferences: ^2.0.6  # Shared preferences package
   get: ^4.6.5
   permission_handler:
 

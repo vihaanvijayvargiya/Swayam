@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 class PulseRateScreen extends StatefulWidget {
+  final BluetoothDevice device;
+
+  PulseRateScreen({required this.device});
+
   @override
   _PulseRateScreenState createState() => _PulseRateScreenState();
 }
 
 class _PulseRateScreenState extends State<PulseRateScreen> {
-  BluetoothDevice? device;
   BluetoothCharacteristic? heartRateCharacteristic;
   BluetoothCharacteristic? spo2Characteristic;
   double heartRate = 0.0;
   double spo2 = 0.0;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    device = ModalRoute.of(context)!.settings.arguments as BluetoothDevice;
+  void initState() {
+    super.initState();
     _discoverServices();
   }
 
   void _discoverServices() async {
-    if (device == null) return;
-    List<BluetoothService> services = await device!.discoverServices();
+    if (widget.device == null) return;
+    List<BluetoothService> services = await widget.device.discoverServices();
     for (BluetoothService service in services) {
       for (BluetoothCharacteristic characteristic in service.characteristics) {
         if (characteristic.uuid.toString() == "00002a37-0000-1000-8000-00805f9b34fb") {
@@ -65,4 +67,3 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
     );
   }
 }
-

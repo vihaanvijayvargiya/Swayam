@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:swayam/screens/ble_screen.dart';
+import 'ble_screen.dart';
 import 'logout.dart';
 import 'medbot.dart';
 import 'signin_screen.dart';
@@ -15,11 +15,14 @@ import 'ECG.dart';
 import 'pulse_rate.dart';
 import 'spo2.dart';
 
+
 class HomeScreen extends StatefulWidget {
+
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
+
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -330,7 +333,7 @@ class HomeContent extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PulseRateScreen()),
+                MaterialPageRoute(builder: (context) => PulseRateScreen(device: device)),
               );
             },
             child: Container(

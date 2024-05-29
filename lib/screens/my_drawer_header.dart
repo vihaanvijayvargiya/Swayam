@@ -15,7 +15,7 @@ class MyHeaderDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF008080),
+      color: Colors.teal,
       width: double.infinity,
       height: 200,
       padding: EdgeInsets.only(top: 20.0),
