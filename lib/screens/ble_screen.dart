@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
+import 'package:get/get.dart';
+import 'ble_controller.dart';
+import 'pulse_rate.dart'; // Import the PulseRateScreen
+
+class BleScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Bluetooth Devices'),
+      ),
+      body: GetBuilder<BleController>(
+        init: BleController(),
+        builder: (BleController controller) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                StreamBuilder<List<ScanResult>>(
+                  stream: controller.flutterBlue.scanResults,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final data = snapshot.data![index];
+                            return Card(
+                              elevation: 2,
+                              child: ListTile(
+                                title: Text(data.device.name),
+                                subtitle: Text(data.device.id.id),
+                                trailing: Text(data.rssi.toString()),
+                                onTap: () async {
+                                  await controller.connectToDevice(data.device);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PulseRateScreen(device: data.device),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return Center(child: Text("No Device Found"));
+                    }
+                  },
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () async {
+                    await controller.scanDevices();
+                  },
+                  child: Text("SCAN"),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
