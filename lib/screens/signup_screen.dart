@@ -14,6 +14,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final TextEditingController _userTypeController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -22,10 +23,12 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   bool _isLoading = false;
+  String? _selectedUserType; // Default value
 
   @override
   void dispose() {
     super.dispose();
+    _userTypeController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
@@ -42,12 +45,20 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
+    // Check if username starts with the correct letter
+    if ((_selectedUserType == 'Self' && !_usernameController.text.startsWith('S')) ||
+        (_selectedUserType == 'Doctor' && !_usernameController.text.startsWith('D'))) {
+      Fluttertoast.showToast(msg: "Username must start with ${_selectedUserType == 'Self' ? 'S' : 'D'}");
+      return;
+    }
+
     // set loading to true
     setState(() {
       _isLoading = true;
     });
 
     String res = await AuthMethods().signUpUser(
+      userType: _selectedUserType!,
       email: _emailController.text,
       password: _passwordController.text,
       username: _usernameController.text,
@@ -97,6 +108,51 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: Image.asset('assets/images/swayam.png')),
                 Text('Swayam', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30, color: Color(0x018D8DFF)),),
                 SizedBox(height: 20,),
+                Container(
+                  color: Colors.white, // Set the background color of the dropdown widget
+                  child: DropdownButtonFormField<String>(
+                    value: _selectedUserType,
+                    items: ['Self', 'Doctor'].map((String category) {
+                      return DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(
+                          category,
+                          style: TextStyle(
+                            color: _selectedUserType == category ? Colors.teal : Colors.black,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        _selectedUserType = newValue;
+                      });
+                    },
+                    dropdownColor: Colors.white, // Set the dropdown menu background color to white
+                    style: TextStyle(color: Colors.black), // Set text color
+                    decoration: InputDecoration(
+                      hintText: 'Select User Type',
+                      prefixIcon: Icon(Icons.person, color: Colors.grey[800]),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.teal),
+                      ),
+                      fillColor: Colors.white, // Set the background color of the dropdown field to white
+                      filled: true,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(
+                  height: 24,
+                ),
                 InputText(
                   hint: 'Enter your email',
                   textInputType: TextInputType.emailAddress,
@@ -112,6 +168,19 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: _usernameController,
                   icon: Icon(Icons.person, color: Colors.grey[800]),
                 ),
+                if (_selectedUserType != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      _selectedUserType == 'Self'
+                          ? 'Username must start with S'
+                          : 'Username must start with D',
+                      style: TextStyle(
+                        color: Colors.grey[800],
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
                 const SizedBox(
                   height: 24,
                 ),

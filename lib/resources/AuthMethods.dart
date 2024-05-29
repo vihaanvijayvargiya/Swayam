@@ -12,10 +12,12 @@ class AuthMethods {
     required String weight,
     required String height,
     required String age,
+    required String userType,
   }) async {
     String res = "Some error occurred";
     try {
-      if (email.isNotEmpty &&
+      if (userType.isNotEmpty&&
+          email.isNotEmpty &&
           password.isNotEmpty &&
           username.isNotEmpty &&
           weight.isNotEmpty &&
@@ -28,6 +30,7 @@ class AuthMethods {
         );
 
         await _firestore.collection("users").doc(cred.user!.uid).set({
+          'userType': userType,
           'username': username,
           'email': email,
           'weight': weight,
