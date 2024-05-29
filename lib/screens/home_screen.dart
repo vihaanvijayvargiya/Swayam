@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:swayam/screens/ble_screen.dart';
 import 'logout.dart';
 import 'medbot.dart';
 import 'signin_screen.dart';
@@ -101,6 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (currentPage == DrawerSections.logout) {
       container = LoginScreen();
     }
+    else if (currentPage == DrawerSections.ble) {
+      container = BleScreen();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -108,12 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(
           "Swayam",
           style: TextStyle(
-            color: Color(0xFF008080),
+            color: Colors.teal,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
-        iconTheme: IconThemeData(color: Color(0xFF008080)),
+        iconTheme: IconThemeData(color: Colors.teal),
       ),
       body: container,
       drawer: Drawer(
@@ -185,11 +189,13 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           menuItem(1, "Home", Icons.home, currentPage == DrawerSections.home),
           menuItem(2, "Profile", Icons.people_alt_outlined, currentPage == DrawerSections.profile),
-          menuItem(3, "Notifications", Icons.notifications_outlined, currentPage == DrawerSections.notifications),
           Divider(),
+          menuItem(3, "Notifications", Icons.notifications_outlined, currentPage == DrawerSections.notifications),
           menuItem(4, "Emergency Service", Icons.contact_phone_sharp, currentPage == DrawerSections.contacts),
+          Divider(),
           menuItem(5, "About", Icons.info, currentPage == DrawerSections.about),
-          menuItem(6, "Logout", Icons.logout, currentPage == DrawerSections.logout),
+          menuItem(6, "Connect Device", Icons.bluetooth, currentPage == DrawerSections.ble),
+          menuItem(7, "Logout", Icons.logout, currentPage == DrawerSections.logout),
         ],
       ),
     );
@@ -212,6 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (id == 5) {
             _onDrawerItemTapped(DrawerSections.about);
           } else if (id == 6) {
+            _onDrawerItemTapped(DrawerSections.ble);
+          }else if (id == 7) {
             _onDrawerItemTapped(DrawerSections.logout);
           }
         },
@@ -250,6 +258,7 @@ enum DrawerSections {
   notifications,
   contacts,
   about,
+  ble,
   logout,
   sarthi, // Added Sarthi enum
 }
