@@ -333,8 +333,8 @@ class HomeContent extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PulseRateScreen(device: device)),
-              );
+                MaterialPageRoute(builder: (context) => PulseRateScreen(),
+              ));
             },
             child: Container(
               margin: EdgeInsets.all(10.0),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 class PulseRateScreen extends StatefulWidget {
-  final BluetoothDevice device;
+  final BluetoothDevice? device; // Make device parameter optional by adding '?'
 
-  PulseRateScreen({required this.device});
+  PulseRateScreen({this.device}); // Make device parameter optional
 
   @override
   _PulseRateScreenState createState() => _PulseRateScreenState();
@@ -19,12 +19,14 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
   @override
   void initState() {
     super.initState();
-    _discoverServices();
+    if (widget.device != null) {
+      _discoverServices();
+    }
   }
 
   void _discoverServices() async {
     if (widget.device == null) return;
-    List<BluetoothService> services = await widget.device.discoverServices();
+    List<BluetoothService> services = await widget.device!.discoverServices();
     for (BluetoothService service in services) {
       for (BluetoothCharacteristic characteristic in service.characteristics) {
         if (characteristic.uuid.toString() == "00002a37-0000-1000-8000-00805f9b34fb") {
@@ -59,8 +61,8 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Heart Rate: $heartRate bpm'),
-            Text('SpO2: $spo2 %'),
+            Text('Heart Rate: ${widget.device != null ? '$heartRate bpm' : 'N/A'}'),
+            Text('SpO2: ${widget.device != null ? '$spo2 %' : 'N/A'}'),
           ],
         ),
       ),
