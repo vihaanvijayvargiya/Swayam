@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pretty_gauge/pretty_gauge.dart';
-import 'package:share_plus/share_plus.dart';
 
 class ScoreScreen extends StatelessWidget {
   final double bmiScore;
@@ -21,8 +20,16 @@ class ScoreScreen extends StatelessWidget {
     setBmiInterpretation();
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
+        title: Text(
+          "BMI Score",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
-        title: const Text("BMI Score"),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
           padding: const EdgeInsets.all(12),
@@ -77,22 +84,29 @@ class ScoreScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Re-calculate")),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            "Re-calculate",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.teal, // Set the background color to teal
+                          ),
+                        ),
                         const SizedBox(
                           width: 10,
                         ),
-                        ElevatedButton(
-                            onPressed: () {
-                              Share.share(
-                                  "Your BMI is ${bmiScore.toStringAsFixed(1)} at age $age");
-                            },
-                            child: const Text("Share")),
                       ],
                     )
-                  ]))),
+                  ]
+              )
+          )
+      ),
     );
   }
 

@@ -58,6 +58,7 @@ class _SpO2ScreenState extends State<SpO2Screen> {
           ),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -72,11 +73,25 @@ class _SpO2ScreenState extends State<SpO2Screen> {
                 ),
                 child: Center(
                   child: widget.device == null
-                      ? Text('N/A')
+                      ? Text(
+                    'N/A',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  )
                       : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('Heart Rate: $spo2 %'),
+                      Text(
+                        'Heart Rate: $spo2 %',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -98,11 +113,12 @@ class _SpO2ScreenState extends State<SpO2Screen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  'Heart rate in resting state usually varies between 60 and 100 \n'
-                      '\nActive Heart Rate: Exercise process according to the heart rate interval can determine the body\'s movement state, select the appropriate heart rate interval to achieve better sporting effect',
+                  'Understanding Oxygen Saturation Data \n'
+                      '\nOxygen Saturation is the percentage of oxygen-bound oxyhemoglobin in the blood that counts for the total amount of hemoglobin that can be combined that is the concentration of blood oxygen in the blood, which is an important physiological parameter of respiratory cycle\n'
+                  '\n Normal arterial oxygen saturation of about 95-100%',
                   style: TextStyle(
                     color: Colors.green,
-                    fontSize: 20,
+                    fontSize: 14,
                   ),
                 ),
               ),

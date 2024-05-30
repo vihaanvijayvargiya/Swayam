@@ -5,9 +5,9 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
 import 'Score_screen.dart';
-import 'age_weight_widget.dart';
-import 'gender_widget.dart';
-import 'height_widget.dart';
+import '../widgets/age_weight_widget.dart';
+import '../widgets/gender_widget.dart';
+import '../widgets/height_widget.dart';
 
 class BmiIndex extends StatefulWidget {
   const BmiIndex({Key? key}) : super(key: key);
@@ -28,8 +28,16 @@ class _BmiIndexState extends State<BmiIndex> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.teal,
+          title: Text(
+            "BMI Calculator",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           centerTitle: true,
-          title: const Text("BMI Calculator"),
+          iconTheme: IconThemeData(color: Colors.white),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -100,7 +108,7 @@ class _BmiIndexState extends State<BmiIndex> {
                             });
                           });
                         },
-                        activeColor: Colors.blue,
+                        activeColor: Colors.teal,
                         buttonWidget: const Icon(
                           Icons.arrow_forward_ios_rounded,
                           color: Colors.black,

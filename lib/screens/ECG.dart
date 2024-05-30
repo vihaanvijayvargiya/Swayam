@@ -58,15 +58,77 @@ class _ECGScreenState extends State<ECGScreen> {
           ),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: Center(
-        child: widget.device == null
-            ? Text('No device connected')
-            : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('ECG Value: $ecgValue'),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: widget.device == null
+                      ? Text(
+                    'N/A',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  )
+                      : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'ECG: $ecgValue',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                padding: EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'hola',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                padding: EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'Electrocardiogram \n'
+                  '\nECG measures the electrical activity of the heart to detect any abnormalities. It helps to diagnose various heart conditions, such as arrhythmias, heart attacks, and other cardiac issues, enabling timely and appropriate medical intervention.',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

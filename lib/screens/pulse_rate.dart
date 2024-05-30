@@ -1,5 +1,5 @@
-import 'dart:typed_data'; // Add this import statement
-
+import 'dart:typed_data'; 
+import 'package:pretty_gauge/pretty_gauge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
@@ -60,6 +60,7 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
           ),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -69,16 +70,30 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
               Container(
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(
-                  color: Color(0x95FF7F7F),
+                  color: Color(0xFFFFCCCB),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
                   child: widget.device == null
-                      ? Text('N/A')
+                      ? Text(
+                    'N/A',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  )
                       : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('Heart Rate: $heartRate bpm'),
+                      Text(
+                        'Heart Rate: $heartRate bpm',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -87,24 +102,30 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
               Container(
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(
-                  color: Color(0x95FF7F7F),
+                  color: Color(0xFFFFCCCB),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Image.asset('assets/last_record_image.png'),
+                child: Text(
+                  'hola',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20,
+                  ),
+                ),
               ),
               SizedBox(height: 30),
               Container(
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(
-                  color: Color(0x95FF7F7F),
+                  color: Color(0xFFFFCCCB),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   'Heart rate in resting state usually varies between 60 and 100 \n'
-                      '\nActive Heart Rate: Exercise process according to the heart rate interval can determine the body\'s movement state, select the appropriate heart rate interval to achieve better sporting effect',
+                      '\nActive Heart Rate: Exercise process according to the heart rate interval can determine the body\'s movement state, select the appropriate heart rate interval to achieve better sporting effect.',
                   style: TextStyle(
                     color: Colors.red,
-                    fontSize: 20,
+                    fontSize: 14,
                   ),
                 ),
               ),
