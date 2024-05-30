@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:pretty_gauge/pretty_gauge.dart';
 
 class SpO2Screen extends StatefulWidget {
   final BluetoothDevice? device;
@@ -85,7 +86,7 @@ class _SpO2ScreenState extends State<SpO2Screen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Heart Rate: $spo2 %',
+                        'SpO2: $spo2 %',
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -97,13 +98,21 @@ class _SpO2ScreenState extends State<SpO2Screen> {
                 ),
               ),
               SizedBox(height: 30),
-              Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Color(0x9990EE90),
-                  borderRadius: BorderRadius.circular(8),
+              PrettyGauge(
+                gaugeSize: 300,
+                minValue: 0,
+                maxValue: 100, // SpO2 values typically range from 0 to 100%
+                segments: [
+                  GaugeSegment('Low', 85, Colors.red), // Below 85% is considered low and critical
+                  GaugeSegment('Normal', 10, Colors.green), // 85% to 95% is considered normal
+                  GaugeSegment('High', 5, Colors.blue), // Above 95% is considered high and optimal
+                ],
+                valueWidget: Text(
+                  spo2.toStringAsFixed(1),
+                  style: const TextStyle(fontSize: 40),
                 ),
-                child: Image.asset('assets/last_record_image.png'),
+                currentValue: spo2,
+                needleColor: Colors.blue,
               ),
               SizedBox(height: 25),
               Container(

@@ -99,19 +99,21 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
                 ),
               ),
               SizedBox(height: 30),
-              Container(
-                padding: EdgeInsets.all(30),
-                decoration: BoxDecoration(
-                  color: Color(0xFFFFCCCB),
-                  borderRadius: BorderRadius.circular(8),
+              PrettyGauge(
+                gaugeSize: 300,
+                minValue: 0,
+                maxValue: 200, // Adjust the maxValue based on typical heart rate range
+                segments: [
+                  GaugeSegment('Low', 60, Colors.blue),
+                  GaugeSegment('Normal', 40, Colors.green),
+                  GaugeSegment('High', 100, Colors.red),
+                ],
+                valueWidget: Text(
+                  heartRate.toStringAsFixed(1),
+                  style: const TextStyle(fontSize: 40),
                 ),
-                child: Text(
-                  'hola',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 20,
-                  ),
-                ),
+                currentValue: heartRate,
+                needleColor: Colors.blue,
               ),
               SizedBox(height: 30),
               Container(
