@@ -16,25 +16,28 @@ import 'notifications.dart';
 import 'ECG.dart';
 import 'pulse_rate.dart';
 import 'spo2.dart';
-
+import 'package:flutter_blue/flutter_blue.dart';
+import 'dart:typed_data';// Add this import for Bluetooth functionality
 
 class HomeScreen extends StatefulWidget {
+  final BluetoothDevice? device; // Add this line to accept a Bluetooth device
 
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, this.device}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
-
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   late String _userName = '';
   late String _email = '';
+  BluetoothDevice? _device; // Add this line for the Bluetooth device
 
   @override
   void initState() {
     super.initState();
     _getUserData();
+    _device = widget.device; // Initialize the Bluetooth device
   }
 
   Future<void> _getUserData() async {
@@ -52,9 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
   var currentPage = DrawerSections.home;
   int _selectedIndex = 1;
 
-  List<Widget> _pages = [
+  List<Widget> _pages() => [
     YourDoctor(),
-    HomeContent(),
+    HomeContent(device: _device), // Pass the device to HomeContent
     Emergency(),
   ];
 
@@ -96,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var container = _pages[_selectedIndex];
+    var container = _pages()[_selectedIndex];
 
     if (currentPage == DrawerSections.profile) {
       container = ProfilePage();
@@ -106,8 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
       container = AboutPage();
     } else if (currentPage == DrawerSections.logout) {
       container = LoginScreen();
-    }
-    else if (currentPage == DrawerSections.ble) {
+    } else if (currentPage == DrawerSections.ble) {
       container = BleScreen();
     }
 
@@ -201,10 +203,11 @@ class _HomeScreenState extends State<HomeScreen> {
           menuItem(5, "About", Icons.info, currentPage == DrawerSections.about),
           menuItem(6, "Connect Device", Icons.bluetooth, currentPage == DrawerSections.ble),
           menuItem(7, "Logout", Icons.logout, currentPage == DrawerSections.logout),
-        ],
+        ].map((item) => Material(child: item)).toList(), // Wrap each item with Material widget
       ),
     );
   }
+
 
   Widget menuItem(int id, String title, IconData icon, bool selected) {
     return Material(
@@ -224,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _onDrawerItemTapped(DrawerSections.about);
           } else if (id == 6) {
             _onDrawerItemTapped(DrawerSections.ble);
-          }else if (id == 7) {
+          } else if (id == 7) {
             _onDrawerItemTapped(DrawerSections.logout);
           }
         },
@@ -268,7 +271,51 @@ enum DrawerSections {
   sarthi, // Added Sarthi enum
 }
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
+  final BluetoothDevice? device;
+
+  HomeContent({this.device});
+
+  @override
+  _HomeContentState createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<HomeContent> {
+  BluetoothCharacteristic? characteristic;
+  double heartRate = 0.0;
+  double spo2 = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.device != null) {
+      _discoverServices();
+    }
+  }
+
+  void _discoverServices() async {
+    if (widget.device == null) return;
+    List<BluetoothService> services = await widget.device!.discoverServices();
+    for (BluetoothService service in services) {
+      for (BluetoothCharacteristic characteristic in service.characteristics) {
+        if (characteristic.uuid.toString() == "0d45ee9d-5a43-46fa-8370-9651c48af2a0") {
+          await characteristic.setNotifyValue(true);
+          characteristic.value.listen((value) {
+            setState(() {
+              heartRate = _convertToFloat(value);
+              spo2 = _convertToFloat(value.sublist(4, 8));
+            });
+          });
+        }
+      }
+    }
+  }
+
+  double _convertToFloat(List<int> value) {
+    ByteData byteData = ByteData.sublistView(Uint8List.fromList(value));
+    return byteData.getFloat32(0, Endian.little);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -377,7 +424,7 @@ class HomeContent extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'The Heart Rate from device will be shown here',
+                          heartRate != 0.0 ? 'Heart Rate: $heartRate' : 'The Heart Rate from device will be shown here',
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -432,7 +479,7 @@ class HomeContent extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'The SPO2 from device will be shown here',
+                          spo2 != 0.0 ? 'sp02: $spo2' : 'The Heart Rate from device will be shown here',
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -473,13 +520,13 @@ class HomeContent extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(Icons.accessibility_new, size: 24, color: Colors.lightBlueAccent), // Icon for BMI
+                            Icon(Icons.accessibility_new, size: 24, color: Colors.teal), // Icon for BMI
                             SizedBox(width: 8),
                             Text(
                               'BMI',
                               style: TextStyle(
                                 fontSize: 24,
-                                color: Colors.lightBlueAccent,
+                                color: Colors.teal,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

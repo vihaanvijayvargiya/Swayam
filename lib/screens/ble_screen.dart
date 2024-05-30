@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/get.dart';
+import 'package:swayam/screens/home_screen.dart';
+import 'package:swayam/screens/my_drawer_header.dart';
 import 'ble_controller.dart';
 import 'pulse_rate.dart'; // Import the PulseRateScreen
 
@@ -39,7 +41,7 @@ class BleScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PulseRateScreen(device: data.device),
+                                      builder: (context) => HomeScreen(device: data.device),
                                     ),
                                   );
                                 },

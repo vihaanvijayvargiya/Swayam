@@ -49,14 +49,14 @@ class MyHeaderDrawer extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class MyDrawerHeaderScreen extends StatefulWidget {
+  const MyDrawerHeaderScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _MyDrawerHeader createState() => _MyDrawerHeader();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MyDrawerHeader extends State<MyDrawerHeaderScreen> {
   late String _userName = '';
   late String _email = '';
 
