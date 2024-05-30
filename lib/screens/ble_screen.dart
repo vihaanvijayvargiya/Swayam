@@ -58,8 +58,18 @@ class BleScreen extends StatelessWidget {
                   onPressed: () async {
                     await controller.scanDevices();
                   },
-                  child: Text("SCAN"),
-                ),
+                  child: Text(
+                    "SCAN",
+                    style: TextStyle(
+                      color: Colors.teal, // Change this to your desired text color
+                      fontSize: 16, // Change this to your desired text size
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(120, 50), // Change the width and height as needed
+                  ),
+                )
+
               ],
             ),
           );
