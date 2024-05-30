@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:swayam/screens/Score_screen.dart';
+import 'package:swayam/screens/bmi_index.dart';
 import 'ble_screen.dart';
 import 'logout.dart';
 import 'medbot.dart';
@@ -269,174 +271,234 @@ enum DrawerSections {
 class HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // ECG Widget - Half of the screen
-        Expanded(
-          flex: 2,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ECGScreen()),
-              );
-            },
-            child: Container(
-              margin: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.white, // Background color
-                borderRadius: BorderRadius.circular(15), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Shadow color
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3), // Shadow position
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            // ECG Widget - Half of the screen
+            Container(
+              margin: EdgeInsets.only(bottom: 10.0),
+              height: MediaQuery.of(context).size.height * 0.4, // 40% of the screen height
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ECGScreen()),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color
+                    borderRadius: BorderRadius.circular(15), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1), // Shadow color
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // Shadow position
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.show_chart, size: 24, color: Colors.blue), // Icon for ECG
-                        SizedBox(width: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(Icons.show_chart, size: 24, color: Colors.blue), // Icon for ECG
+                            SizedBox(width: 8),
+                            Text(
+                              'ECG',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
                         Text(
-                          'ECG',
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          'The ECG from device will be shown here',
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'The ECG from device will be shown here',
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        // Heart Rate Widget - 1/4 of the screen
-        Expanded(
-          flex: 1,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PulseRateScreen(),
-              ));
-            },
-            child: Container(
-              margin: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.white, // Background color
-                borderRadius: BorderRadius.circular(15), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Shadow color
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3), // Shadow position
+            // Heart Rate Widget - 1/4 of the screen
+            Container(
+              margin: EdgeInsets.only(bottom: 10.0),
+              height: MediaQuery.of(context).size.height * 0.2, // 20% of the screen height
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PulseRateScreen()),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color
+                    borderRadius: BorderRadius.circular(15), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1), // Shadow color
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // Shadow position
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.favorite, size: 24, color: Colors.red), // Icon for Heart Rate
-                        SizedBox(width: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(Icons.favorite, size: 24, color: Colors.red), // Icon for Heart Rate
+                            SizedBox(width: 8),
+                            Text(
+                              'Heart Rate',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
                         Text(
-                          'Heart Rate',
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          'The Heart Rate from device will be shown here',
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'The Heart Rate from device will be shown here',
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        // SPO2 Widget - 1/4 of the screen
-        Expanded(
-          flex: 1,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SpO2Screen()),
-              );
-            },
-            child: Container(
-              margin: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.white, // Background color
-                borderRadius: BorderRadius.circular(15), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Shadow color
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3), // Shadow position
+            // SPO2 Widget - 1/4 of the screen
+            Container(
+              margin: EdgeInsets.only(bottom: 10.0),
+              height: MediaQuery.of(context).size.height * 0.2, // 20% of the screen height
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SpO2Screen()),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color
+                    borderRadius: BorderRadius.circular(15), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1), // Shadow color
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // Shadow position
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.bloodtype, size: 24, color: Colors.green), // Icon for SPO2
-                        SizedBox(width: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(Icons.bloodtype, size: 24, color: Colors.green), // Icon for SPO2
+                            SizedBox(width: 8),
+                            Text(
+                              'SPO2',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
                         Text(
-                          'SPO2',
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          'The SPO2 from device will be shown here',
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'The SPO2 from device will be shown here',
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
+            // BMI Widget - 1/4 of the screen
+            Container(
+              margin: EdgeInsets.only(bottom: 10.0),
+              height: MediaQuery.of(context).size.height * 0.2, // 20% of the screen height
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BmiIndex()),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color
+                    borderRadius: BorderRadius.circular(15), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1), // Shadow color
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // Shadow position
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(Icons.accessibility_new, size: 24, color: Colors.lightBlueAccent), // Icon for BMI
+                            SizedBox(width: 8),
+                            Text(
+                              'BMI',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.lightBlueAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Tap here to check your BMI score',
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
