@@ -1,18 +1,19 @@
+import 'dart:typed_data'; // Add this import statement
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 class PulseRateScreen extends StatefulWidget {
-  final BluetoothDevice? device; // Make device parameter optional by adding '?'
+  final BluetoothDevice? device; // Make BluetoothDevice nullable
 
-  PulseRateScreen({this.device}); // Make device parameter optional
+  PulseRateScreen({this.device});
 
   @override
   _PulseRateScreenState createState() => _PulseRateScreenState();
 }
 
 class _PulseRateScreenState extends State<PulseRateScreen> {
-  BluetoothCharacteristic? heartRateCharacteristic;
-  BluetoothCharacteristic? spo2Characteristic;
+  BluetoothCharacteristic? characteristic;
   double heartRate = 0.0;
   double spo2 = 0.0;
 
@@ -29,26 +30,23 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
     List<BluetoothService> services = await widget.device!.discoverServices();
     for (BluetoothService service in services) {
       for (BluetoothCharacteristic characteristic in service.characteristics) {
-        if (characteristic.uuid.toString() == "00002a37-0000-1000-8000-00805f9b34fb") {
-          heartRateCharacteristic = characteristic;
-          await heartRateCharacteristic!.setNotifyValue(true);
-          heartRateCharacteristic!.value.listen((value) {
+        if (characteristic.uuid.toString() == "0d45ee9d-5a43-46fa-8370-9651c48af2a0") {
+          await characteristic.setNotifyValue(true);
+          characteristic.value.listen((value) {
             setState(() {
-              heartRate = value[0].toDouble();  // Example conversion, adjust as necessary
-            });
-          });
-        }
-        if (characteristic.uuid.toString() == "00002a5f-0000-1000-8000-00805f9b34fb") {
-          spo2Characteristic = characteristic;
-          await spo2Characteristic!.setNotifyValue(true);
-          spo2Characteristic!.value.listen((value) {
-            setState(() {
-              spo2 = value[0].toDouble();  // Example conversion, adjust as necessary
+              // Convert value to float for heart rate and SpO2
+              heartRate = _convertToFloat(value.sublist(0, 4));
+              spo2 = _convertToFloat(value.sublist(4, 8));
             });
           });
         }
       }
     }
+  }
+
+  double _convertToFloat(List<int> value) {
+    var buffer = ByteData.view(Uint8List.fromList(value).buffer); // Use ByteData.view to create a view of the Uint8List's buffer
+    return buffer.getFloat32(0, Endian.little);
   }
 
   @override
@@ -58,11 +56,13 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
         title: Text('Pulse Rate'),
       ),
       body: Center(
-        child: Column(
+        child: widget.device == null // Check if device is null
+            ? Text('No device connected')
+            : Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Heart Rate: ${widget.device != null ? '$heartRate bpm' : 'N/A'}'),
-            Text('SpO2: ${widget.device != null ? '$spo2 %' : 'N/A'}'),
+            Text('Heart Rate: $heartRate bpm'),
+            Text('SpO2: $spo2 %'),
           ],
         ),
       ),
