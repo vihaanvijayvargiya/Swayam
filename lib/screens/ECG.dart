@@ -49,7 +49,15 @@ class _ECGScreenState extends State<ECGScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ECG Data'),
+        backgroundColor: Colors.blue,
+        title: Text(
+          "ECG",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: Center(
         child: widget.device == null

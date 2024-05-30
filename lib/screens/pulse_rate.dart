@@ -15,7 +15,6 @@ class PulseRateScreen extends StatefulWidget {
 class _PulseRateScreenState extends State<PulseRateScreen> {
   BluetoothCharacteristic? characteristic;
   double heartRate = 0.0;
-  double spo2 = 0.0;
 
   @override
   void initState() {
@@ -36,7 +35,6 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
             setState(() {
               // Convert value to float for heart rate and SpO2
               heartRate = _convertToFloat(value.sublist(0, 4));
-              spo2 = _convertToFloat(value.sublist(4, 8));
             });
           });
         }
@@ -53,17 +51,65 @@ class _PulseRateScreenState extends State<PulseRateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pulse Rate'),
+        backgroundColor: Colors.red,
+        title: Text(
+          "Heart Rate",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
       ),
-      body: Center(
-        child: widget.device == null // Check if device is null
-            ? Text('No device connected')
-            : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Heart Rate: $heartRate bpm'),
-            Text('SpO2: $spo2 %'),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Color(0x95FF7F7F),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: widget.device == null
+                      ? Text('N/A')
+                      : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Heart Rate: $heartRate bpm'),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                padding: EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Color(0x95FF7F7F),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Image.asset('assets/last_record_image.png'),
+              ),
+              SizedBox(height: 30),
+              Container(
+                padding: EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Color(0x95FF7F7F),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'Heart rate in resting state usually varies between 60 and 100 \n'
+                      '\nActive Heart Rate: Exercise process according to the heart rate interval can determine the body\'s movement state, select the appropriate heart rate interval to achieve better sporting effect',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
