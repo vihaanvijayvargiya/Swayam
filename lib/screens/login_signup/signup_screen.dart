@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swayam/screens/home_screen.dart';
-import 'package:swayam/screens/signin_screen.dart';
+import 'package:swayam/screens/login_signup/signin_screen.dart';
 
-import '../resources/AuthMethods.dart';
-import '../widgets/textfield.dart';
+import '../../resources/AuthMethods.dart';
+import '../../widgets/textfield.dart';
+import '../self_home_screen.dart';
+import '../doctor_home_screen.dart';  // Import the respective home screens
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -71,9 +73,18 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = false;
       });
       if (context.mounted) {
+        Widget homeScreen;
+        if (_selectedUserType == 'Self') {
+          homeScreen = SelfHomeScreen();
+        } else if (_selectedUserType == 'Doctor') {
+          homeScreen = DoctorHomeScreen();
+        } else {
+          homeScreen = HomeScreen();  // Default home screen if userType is unknown
+        }
+
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => homeScreen),
               (route) => false,
         );
       }

@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:swayam/screens/Score_screen.dart';
-import 'package:swayam/screens/bmi_index.dart';
-import 'ble_screen.dart';
-import 'logout.dart';
+import 'package:swayam/screens/bmi/Score_screen.dart';
+import 'package:swayam/screens/bmi/bmi_index.dart';
+import 'ble/ble_screen.dart';
 import 'medbot.dart';
-import 'signin_screen.dart';
-import 'my_drawer_header.dart';
+import 'login_signup/signin_screen.dart';
+import 'drawer/my_drawer_header.dart';
 import 'consultDoctor/your_doctor.dart';
 import 'emergency.dart';
-import 'profile.dart';
-import 'about.dart';
-import 'notifications.dart';
+import 'drawer/profile.dart';
+import 'drawer/about.dart';
+import 'drawer/notifications.dart';
 import 'ECG.dart';
 import 'pulse_rate.dart';
 import 'spo2.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:typed_data';// Add this import for Bluetooth functionality
 
-class HomeScreen extends StatefulWidget {
+class SelfHomeScreen extends StatefulWidget {
   final BluetoothDevice? device; // Add this line to accept a Bluetooth device
 
-  const HomeScreen({Key? key, this.device}) : super(key: key);
+  const SelfHomeScreen({Key? key, this.device}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<SelfHomeScreen> {
   late String _userName = '';
   late String _email = '';
   BluetoothDevice? _device; // Add this line for the Bluetooth device

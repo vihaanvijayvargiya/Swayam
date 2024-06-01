@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swayam/reusable_widgets/reusable_widget.dart';
-import 'package:swayam/screens/home_screen.dart';
+import 'package:swayam/screens/self_home_screen.dart';
 import 'package:swayam/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 

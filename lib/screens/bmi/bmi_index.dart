@@ -5,9 +5,9 @@ import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
 import 'Score_screen.dart';
-import '../widgets/age_weight_widget.dart';
-import '../widgets/gender_widget.dart';
-import '../widgets/height_widget.dart';
+import '../../widgets/age_weight_widget.dart';
+import '../../widgets/gender_widget.dart';
+import '../../widgets/height_widget.dart';
 
 class BmiIndex extends StatefulWidget {
   const BmiIndex({Key? key}) : super(key: key);

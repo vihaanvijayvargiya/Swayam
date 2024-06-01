@@ -1,14 +1,13 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swayam/screens/home_screen.dart';
-import 'package:swayam/screens/signup_screen.dart';
+import 'package:swayam/screens/login_signup/signup_screen.dart';
 
-import '../resources/AuthMethods.dart';
-import '../widgets/textfield.dart';
-
-
+import '../../resources/AuthMethods.dart';
+import '../../widgets/textfield.dart';
+import '../self_home_screen.dart';
+import '../doctor_home_screen.dart';  // Import the respective home screens
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -33,11 +32,20 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethods().loginUser(
+    Map<String, dynamic> res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
-    if (res == 'success') {
+    if (res['status'] == 'success') {
       if (context.mounted) {
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomeScreen()), (route) => false);
+        Widget homeScreen;
+        if (res['userType'] == 'Self') {
+          homeScreen = SelfHomeScreen();
+        } else if (res['userType'] == 'Doctor') {
+          homeScreen = DoctorHomeScreen();
+        } else {
+          homeScreen = HomeScreen();  // Default home screen if userType is unknown
+        }
+
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => homeScreen), (route) => false);
 
         setState(() {
           _isLoading = false;
@@ -48,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
       if (context.mounted) {
-        Fluttertoast.showToast(msg: res);
+        Fluttertoast.showToast(msg: res['status']);
       }
     }
   }
@@ -154,6 +162,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-
 }

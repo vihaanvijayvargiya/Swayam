@@ -16,7 +16,7 @@ class AuthMethods {
   }) async {
     String res = "Some error occurred";
     try {
-      if (userType.isNotEmpty&&
+      if (userType.isNotEmpty &&
           email.isNotEmpty &&
           password.isNotEmpty &&
           username.isNotEmpty &&
@@ -48,23 +48,31 @@ class AuthMethods {
     return res;
   }
 
-  Future<String> loginUser({
+  Future<Map<String, dynamic>> loginUser({
     required String email,
     required String password,
   }) async {
-    String res = "Some error occurred";
+    Map<String, dynamic> res = {"status": "Some error occurred"};
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
-        res = "success";
+
+        User? user = userCredential.user;
+        if (user != null) {
+          DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
+          res = {
+            "status": "success",
+            "userType": userDoc['userType'],
+          };
+        }
       } else {
-        res = "Please enter all the fields";
+        res["status"] = "Please enter all the fields";
       }
     } catch (err) {
-      res = err.toString();
+      res["status"] = err.toString();
     }
     return res;
   }
