@@ -45,7 +45,7 @@ class _DoctorDetailsWidgetState extends State<DoctorDetailsWidget> {
         appBar: AppBar(
           backgroundColor: Color(0xFFF1F4F8),
           automaticallyImplyLeading: false,
-          leading: FlutterFlowIconButton(
+          /*leading: FlutterFlowIconButton(
             borderColor: Colors.transparent,
             borderRadius: 30,
             borderWidth: 1,
@@ -56,9 +56,9 @@ class _DoctorDetailsWidgetState extends State<DoctorDetailsWidget> {
               size: 30,
             ),
             onPressed: () async {
-              context.pop();
+
             },
-          ),
+          ),*/
           title: Text(
             'Details',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -140,7 +140,7 @@ class _DoctorDetailsWidgetState extends State<DoctorDetailsWidget> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Padding(
+                        /*Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                           child: RatingBar.builder(
                             onRatingUpdate: (newValue) => setState(
@@ -156,7 +156,7 @@ class _DoctorDetailsWidgetState extends State<DoctorDetailsWidget> {
                             itemSize: 24,
                             glowColor: Color(0xFFF3A743),
                           ),
-                        ),
+                        ),*/
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 12),
                           child: Container(
