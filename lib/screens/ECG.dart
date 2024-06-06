@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class ECGScreen extends StatefulWidget {
   final BluetoothDevice? device;
@@ -12,8 +13,7 @@ class ECGScreen extends StatefulWidget {
 }
 
 class _ECGScreenState extends State<ECGScreen> {
-  BluetoothCharacteristic? characteristic;
-  double ecgValue = 0.0;
+  List<double> ecgValues = []; // List to store ECG values
 
   @override
   void initState() {
@@ -28,11 +28,12 @@ class _ECGScreenState extends State<ECGScreen> {
     List<BluetoothService> services = await widget.device!.discoverServices();
     for (BluetoothService service in services) {
       for (BluetoothCharacteristic characteristic in service.characteristics) {
-        if (characteristic.uuid.toString() == "0d45ee9d-5a43-46fa-8370-9651c48af2a") {
+        if (characteristic.uuid.toString() == "0d45ee9d-5a43-46fa-8370-9651c48af2a0") {
           await characteristic.setNotifyValue(true);
           characteristic.value.listen((value) {
+            double newValue = _convertToFloat(value.sublist(0, 4));
             setState(() {
-              ecgValue = _convertToFloat(value);
+              ecgValues.add(newValue); // Add new ECG value to the list
             });
           });
         }
@@ -71,25 +72,63 @@ class _ECGScreenState extends State<ECGScreen> {
                   color: Colors.blue.shade50,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Center(
-                  child: widget.device == null
-                      ? Text(
-                    'N/A',
+                height: 200, // Adjust the height as needed
+                child: ecgValues.isEmpty
+                    ? Center(
+                  child: Text(
+                    'No data available',
                     style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
-                  )
-                      : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'ECG: $ecgValue',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                  ),
+                )
+                    : LineChart(
+                  LineChartData(
+                    minX: 0,
+                    maxX: ecgValues.length.toDouble() - 1,
+                    minY: ecgValues.reduce((a, b) => a < b ? a : b) - 10,
+                    maxY: ecgValues.reduce((a, b) => a > b ? a : b) + 10,
+                    titlesData: FlTitlesData(
+                      bottomTitles: SideTitles(
+                        showTitles: true,
+                        getTitles: (value) {
+                          if (value % 20 == 0) {
+                            return value.toInt().toString();
+                          }
+                          return '';
+                        },
+                      ),
+                      leftTitles: SideTitles(
+                        showTitles: true,
+                        getTitles: (value) {
+                          return value.toInt().toString();
+                        },
+                      ),
+                    ),
+                    gridData: FlGridData(
+                      show: true,
+                      horizontalInterval: 20,
+                    ),
+                    borderData: FlBorderData(
+                      show: true,
+                    ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: List.generate(
+                          ecgValues.length,
+                              (index) => FlSpot(index.toDouble(), ecgValues[index]),
+                        ),
+                        isCurved: true,
+                        colors: [Colors.blue],
+                        barWidth: 3,
+                        isStrokeCapRound: true,
+                        dotData: FlDotData(
+                          show: false,
+                        ),
+                        belowBarData: BarAreaData(
+                          show: false,
                         ),
                       ),
                     ],
@@ -120,7 +159,7 @@ class _ECGScreenState extends State<ECGScreen> {
                 ),
                 child: Text(
                   'Electrocardiogram \n'
-                  '\nECG measures the electrical activity of the heart to detect any abnormalities. It helps to diagnose various heart conditions, such as arrhythmias, heart attacks, and other cardiac issues, enabling timely and appropriate medical intervention.',
+                      '\nECG measures the electrical activity of the heart to detect any abnormalities. It helps to diagnose various heart conditions, such as arrhythmias, heart attacks, and other cardiac issues, enabling timely and appropriate medical intervention.',
                   style: TextStyle(
                     color: Colors.blue,
                     fontSize: 14,

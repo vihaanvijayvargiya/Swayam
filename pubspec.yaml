@@ -55,6 +55,8 @@ dependencies:
   page_transition: ^2.0.4
   pretty_gauge: ^1.0.1
   share_plus: ^4.0.4
+  image_picker: ^0.8.7+3
+  fl_chart: ^0.35.0
 
 dev_dependencies:
   flutter_test:

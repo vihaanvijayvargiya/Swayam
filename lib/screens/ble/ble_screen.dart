@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/get.dart';
+import 'package:swayam/screens/ECG.dart';
 import 'package:swayam/screens/self_home_screen.dart';
 import 'package:swayam/screens/drawer/my_drawer_header.dart';
 import 'ble_controller.dart';
-import '../pulse_rate.dart'; // Import the PulseRateScreen
+import '../pulse_rate.dart';// Import the PulseRateScreen
+import '../ECG.dart';
 
 class BleScreen extends StatelessWidget {
   @override
@@ -41,7 +43,7 @@ class BleScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SelfHomeScreen(device: data.device),
+                                      builder: (context) => ECGScreen(device: data.device),
                                     ),
                                   );
                                 },

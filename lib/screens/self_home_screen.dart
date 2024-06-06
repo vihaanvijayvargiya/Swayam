@@ -283,6 +283,7 @@ class _HomeContentState extends State<HomeContent> {
   BluetoothCharacteristic? characteristic;
   double heartRate = 0.0;
   double spo2 = 0.0;
+  double ecgValue = 0.0;
 
   @override
   void initState() {
@@ -301,7 +302,8 @@ class _HomeContentState extends State<HomeContent> {
           await characteristic.setNotifyValue(true);
           characteristic.value.listen((value) {
             setState(() {
-              heartRate = _convertToFloat(value);
+              ecgValue = _convertToFloat(value.sublist(0, 4));
+              heartRate = _convertToFloat(value.sublist(0, 4));
               spo2 = _convertToFloat(value.sublist(4, 8));
             });
           });
@@ -368,7 +370,7 @@ class _HomeContentState extends State<HomeContent> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'The ECG from device will be shown here',
+                          ecgValue != 0.0 ? 'ECG: $ecgValue' : 'The ECG from device will be shown here',
                           textAlign: TextAlign.center,
                         ),
                       ],

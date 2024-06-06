@@ -2,23 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class InputText extends StatelessWidget {
-  final String hint ;
+  final String hint;
   final Icon icon;
   final TextEditingController controller;
   final TextInputType textInputType;
-  final bool ispass ;
+  final bool ispass;
+  final VoidCallback? onTap;
+
   const InputText({
-    super.key,
+    Key? key,
     required this.hint,
     required this.icon,
     required this.controller,
     required this.textInputType,
-    this.ispass=false
-  });
+    this.ispass = false,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onTap: onTap,
       controller: controller,
       keyboardType: textInputType,
       obscureText: ispass,
