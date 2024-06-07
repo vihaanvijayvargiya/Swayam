@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:swayam/screens/bmi/Score_screen.dart';
 import 'package:swayam/screens/bmi/bmi_index.dart';
+import 'package:swayam/screens/consultDoctor/chat_doctor.dart';
 import 'ble/ble_screen.dart';
 import 'medbot.dart';
 import 'login_signup/signin_screen.dart';
 import 'drawer/my_drawer_header.dart';
-import 'consultDoctor/your_doctor.dart';
 import 'emergency.dart';
 import 'drawer/profile.dart';
 import 'drawer/about.dart';
@@ -30,11 +30,14 @@ class SelfHomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<SelfHomeScreen> {
   late String _userName = '';
   late String _email = '';
-  BluetoothDevice? _device; // Add this line for the Bluetooth device
+  late String _currentUserID = '';
+  BluetoothDevice? _device;
+  // Add this line for the Bluetooth device
 
   @override
   void initState() {
     super.initState();
+    _getCurrentUserID();
     _getUserData();
     _device = widget.device; // Initialize the Bluetooth device
   }
@@ -55,10 +58,14 @@ class _HomeScreenState extends State<SelfHomeScreen> {
   int _selectedIndex = 1;
 
   List<Widget> _pages() => [
-    YourDoctor(),
+    ChatScreen(currentUserID: _currentUserID),
     HomeContent(device: _device), // Pass the device to HomeContent
     Emergency(),
   ];
+  void _getCurrentUserID() {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    _currentUserID = currentUser?.uid ?? '';
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -141,7 +148,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
           ),
         ),
       ),
-      floatingActionButton: Container(
+      /*floatingActionButton: Container(
         margin: const EdgeInsets.only(top: 10),
         height: 64,
         width: 64,
@@ -164,6 +171,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
           ),
         ),
       ),
+       */
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -378,6 +386,7 @@ class _HomeContentState extends State<HomeContent> {
                   ),
                 ),
               ),
+
             ),
             // Heart Rate Widget - 1/4 of the screen
             Container(

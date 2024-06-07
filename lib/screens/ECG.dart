@@ -72,7 +72,7 @@ class _ECGScreenState extends State<ECGScreen> {
                   color: Colors.blue.shade50,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                height: 200, // Adjust the height as needed
+                height: 400, // Adjust the height as needed
                 child: ecgValues.isEmpty
                     ? Center(
                   child: Text(
@@ -135,7 +135,7 @@ class _ECGScreenState extends State<ECGScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 50),
               Container(
                 padding: EdgeInsets.all(30),
                 decoration: BoxDecoration(
