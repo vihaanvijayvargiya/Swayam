@@ -32,6 +32,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
   late String _email = '';
   late String _currentUserID = '';
   BluetoothDevice? _device;
+  late String _imageUrl = '';
   // Add this line for the Bluetooth device
 
   @override
@@ -141,6 +142,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
                 MyHeaderDrawer(
                   userName: _userName,
                   email: _email,
+
                 ),
                 MyDrawerList(),
               ],

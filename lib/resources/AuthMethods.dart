@@ -46,6 +46,7 @@ class AuthMethods {
     required String email,
     required String password,
     required String username,
+    required String name,
     required String dob,
     String? weight,
     String? height,
@@ -66,6 +67,7 @@ class AuthMethods {
           email.isNotEmpty &&
           password.isNotEmpty &&
           username.isNotEmpty &&
+          name.isNotEmpty &&
           dob.isNotEmpty &&
           mobile.isNotEmpty &&
           imageUrl.isNotEmpty) {
@@ -79,6 +81,7 @@ class AuthMethods {
           'userType': userType,
           'username': username,
           'email': email,
+          'name': name,
           'dob': dob,
           'mobile': mobile,
           'imageUrl': imageUrl,

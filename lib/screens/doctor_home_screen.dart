@@ -32,6 +32,7 @@ class _HomeScreenState extends State<DoctorHomeScreen> {
   late String _email = '';
   late String _currentUserID = '';
   BluetoothDevice? _device;
+  late String _imageUrl = '';
 
   @override
   void initState() {
@@ -140,6 +141,7 @@ class _HomeScreenState extends State<DoctorHomeScreen> {
                 MyHeaderDrawer(
                   userName: _userName,
                   email: _email,
+
                 ),
                 MyDrawerList(),
               ],

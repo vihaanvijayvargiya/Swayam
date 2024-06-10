@@ -28,7 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
-
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _experienceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _specializationController = TextEditingController();
@@ -105,7 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
       },
       forceResendingToken: 10,
       timeout: const Duration(seconds: 60),
-       // Remove this line in production
+      // Remove this line in production
     );
   }
 
@@ -189,6 +189,7 @@ class _SignupScreenState extends State<SignupScreen> {
       email: _emailController.text,
       password: _passwordController.text,
       username: _usernameController.text,
+      name: _nameController.text,
       dob: _dobController.text,
       weight: _weightController.text,
       height: _heightController.text,
@@ -302,6 +303,15 @@ class _SignupScreenState extends State<SignupScreen> {
                   height: 24,
                 ),
                 InputText(
+                  hint: 'Enter your name',
+                  textInputType: TextInputType.name,
+                  controller: _nameController,
+                  icon: Icon(Icons.person, color: Colors.grey[800]),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                InputText(
                   hint: 'Enter your email',
                   textInputType: TextInputType.emailAddress,
                   controller: _emailController,
@@ -321,8 +331,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       _selectedUserType == 'Self'
-                          ? 'Username must start with S'
-                          : 'Username must start with D',
+                          ? 'Username must start with S_'
+                          : 'Username must start with D_',
                       style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 12,
