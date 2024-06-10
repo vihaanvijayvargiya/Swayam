@@ -27,7 +27,7 @@ class ProfileDoctorScreen extends StatelessWidget {
             return const Center(child: Text('No data found'));
           }
           var doctorData = snapshot.data!;
-          return ProfileScreen(doctorData: doctorData);
+          return ProfileScreen(doctorData: doctorData, doctorID: doctorID, currentUserID: currentUserID,);
         },
       ),
     );
@@ -36,9 +36,11 @@ class ProfileDoctorScreen extends StatelessWidget {
 
 class ProfileScreen extends StatelessWidget {
   final DocumentSnapshot doctorData;
+  final String doctorID;
+  final String currentUserID;
 
 
-  const ProfileScreen({required this.doctorData});
+  const ProfileScreen({required this.doctorData, required this.doctorID, required this.currentUserID});
 
   @override
   Widget build(BuildContext context) {
