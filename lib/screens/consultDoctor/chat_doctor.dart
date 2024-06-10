@@ -1,17 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
-class ChatScreen extends StatefulWidget {
+class ChatDoctorScreen extends StatefulWidget {
   final String currentUserID;
+  final String doctorID;
 
-  const ChatScreen({required this.currentUserID, Key? key}) : super(key: key);
+  const ChatDoctorScreen({required this.currentUserID, required this.doctorID, Key? key}) : super(key: key);
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatDoctorScreenState createState() => _ChatDoctorScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatDoctorScreenState extends State<ChatDoctorScreen> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
@@ -36,11 +37,18 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void sendMessage() async {
     if (messageText.isNotEmpty) {
-      await _firestore.collection('messages').add({
+      await _firestore.collection('chats').doc(widget.currentUserID).collection('doctorChats').doc(widget.doctorID).collection('messages').add({
         'text': messageText,
-        'sender': loggedInUser.uid,
+        'sender': widget.currentUserID,
         'timestamp': FieldValue.serverTimestamp(),
       });
+
+      await _firestore.collection('chats').doc(widget.doctorID).collection('patientChats').doc(widget.currentUserID).collection('messages').add({
+        'text': messageText,
+        'sender': widget.currentUserID,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
       messageText = '';
     }
   }
@@ -63,7 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: [
           Expanded(
-            child: MessagesStream(currentUserID: widget.currentUserID),
+            child: MessagesStream(currentUserID: widget.currentUserID, doctorID: widget.doctorID),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -95,13 +103,14 @@ class _ChatScreenState extends State<ChatScreen> {
 class MessagesStream extends StatelessWidget {
   final _firestore = FirebaseFirestore.instance;
   final String currentUserID;
+  final String doctorID;
 
-  MessagesStream({required this.currentUserID});
+  MessagesStream({required this.currentUserID, required this.doctorID});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').orderBy('timestamp').snapshots(),
+      stream: _firestore.collection('chats').doc(currentUserID).collection('doctorChats').doc(doctorID).collection('messages').orderBy('timestamp').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -109,7 +118,7 @@ class MessagesStream extends StatelessWidget {
           );
         }
 
-        final messages = snapshot.data!.docs.reversed;
+        final messages = snapshot.data!.docs;
         List<MessageBubble> messageWidgets = [];
         for (var message in messages) {
           final messageText = message['text'];

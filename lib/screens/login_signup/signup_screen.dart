@@ -37,8 +37,13 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _degreeController = TextEditingController();
   final TextEditingController _degreeYearController = TextEditingController();
   File? _degreePdfFile;
+  /*
   File? _userImageFile;
+
   String imageUrl = '';
+  */
+
+
 
   bool _isLoading = false;
   String? _selectedUserType;
@@ -98,10 +103,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
       // Update the state with the new imageUrl
       setState(() {
-        imageUrl = downloadUrl;
+        // imageUrl = downloadUrl;
       });
 
-      print('Image uploaded successfully. URL: $imageUrl');
+      // print('Image uploaded successfully. URL: $imageUrl');
     } catch (error) {
       // Handle errors
       print('Error uploading image: $error');
@@ -190,7 +195,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if ((_selectedUserType == 'Self' && !_usernameController.text.startsWith('S')) ||
         (_selectedUserType == 'Doctor' && !_usernameController.text.startsWith('D'))) {
-      Fluttertoast.showToast(msg: "Username must start with ${_selectedUserType == 'Self' ? 'S' : 'D'}");
+      Fluttertoast.showToast(msg: "Username must start with ${_selectedUserType == 'Self' ? 'S_' : 'D_'}");
       return;
     }
 
@@ -199,7 +204,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _emailController.text.isEmpty || _usernameController.text.isEmpty ||
             _passwordController.text.isEmpty || _dobController.text.isEmpty ||
             _weightController.text.isEmpty || _heightController.text.isEmpty ||
-            _mobileController.text.isEmpty || _userImageFile == null)) {
+            _mobileController.text.isEmpty /*|| _userImageFile == null */)) {
       Fluttertoast.showToast(msg: "Please fill all fields");
       return;
     }
@@ -210,7 +215,27 @@ class _SignupScreenState extends State<SignupScreen> {
             _experienceController.text.isEmpty || _descriptionController.text.isEmpty ||
             _specializationController.text.isEmpty || _currentWorkController.text.isEmpty ||
             _degreeController.text.isEmpty || _degreeYearController.text.isEmpty ||
-            _mobileController.text.isEmpty || _degreePdfFile == null || _userImageFile == null)) {
+            _mobileController.text.isEmpty || _degreePdfFile == null /* || _userImageFile == null */)) {
+
+      print("Doctor User - Missing Fields Detected");
+      print("Email: ${_emailController.text}");
+      print("Username: ${_usernameController.text}");
+      print("Password: ${_passwordController.text}");
+      print("DOB: ${_dobController.text}");
+      print("Experience: ${_experienceController.text}");
+      print("Description: ${_descriptionController.text}");
+      print("Specialization: ${_specializationController.text}");
+      print("Current Work: ${_currentWorkController.text}");
+      print("Degree: ${_degreeController.text}");
+      print("Degree Year: ${_degreeYearController.text}");
+      print("Mobile: ${_mobileController.text}");
+      print("Degree PDF: ${_degreePdfFile != null}");
+      /*
+      print("User Image File: $_userImageFile");
+      print("Image URL: $imageUrl");
+
+       */
+
       Fluttertoast.showToast(msg: "Please fill all fields");
       return;
     }
@@ -236,7 +261,7 @@ class _SignupScreenState extends State<SignupScreen> {
       degree: _degreeController.text,
       degreeYear: _degreeYearController.text,
       degreePdfUrl: _degreePdfFile?.path,
-      imageUrl: imageUrl,
+      // imageUrl: imageUrl,
 
     );
 
@@ -521,7 +546,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   height: 24,
                 ),
 
-                 */
+
                 ElevatedButton(
                   onPressed: _pickAndUploadImage,
                   child: Text('Upload Profile Image'),
@@ -535,6 +560,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(
                   height: 24,
                 ),
+
+                 */
+
                 InkWell(
                   onTap: signUpUser,
                   child: Container(
