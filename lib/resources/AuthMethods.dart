@@ -60,6 +60,7 @@ class AuthMethods {
     String? degreeYear,
     String? degreePdfUrl,
     required String imageUrl,
+
   }) async {
     String res = "Some error occurred";
     try {
@@ -69,8 +70,8 @@ class AuthMethods {
           username.isNotEmpty &&
           name.isNotEmpty &&
           dob.isNotEmpty &&
-          mobile.isNotEmpty &&
-          imageUrl.isNotEmpty) {
+          imageUrl.isNotEmpty &&
+          mobile.isNotEmpty ) {
 
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
@@ -85,6 +86,7 @@ class AuthMethods {
           'dob': dob,
           'mobile': mobile,
           'imageUrl': imageUrl,
+
         };
 
         if (userType == 'Self') {

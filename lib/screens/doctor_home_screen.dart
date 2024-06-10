@@ -141,6 +141,9 @@ class _HomeScreenState extends State<DoctorHomeScreen> {
                 MyHeaderDrawer(
                   userName: _userName,
                   email: _email,
+                  imageUrl: _imageUrl,
+
+
 
                 ),
                 MyDrawerList(),

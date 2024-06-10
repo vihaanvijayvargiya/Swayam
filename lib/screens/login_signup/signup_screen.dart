@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,6 +38,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _degreeYearController = TextEditingController();
   File? _degreePdfFile;
   File? _userImageFile;
+  String imageUrl = '';
 
   bool _isLoading = false;
   String? _selectedUserType;
@@ -65,14 +67,47 @@ class _SignupScreenState extends State<SignupScreen> {
     _degreeYearController.dispose();
   }
 
-  Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _userImageFile = File(pickedFile.path);
-      }
-    });
+  Future<void> _pickAndUploadImage() async {
+    // Initialize the ImagePicker
+    ImagePicker imagePicker = ImagePicker();
+
+    // Pick an image from gallery
+    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    print('${file?.path}');
+
+    if (file == null) return;
+
+    // Generate a unique file name
+    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+    // Get a reference to the root of Firebase Storage
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+
+    // Create a reference for the directory 'images'
+    Reference referenceDirImages = referenceRoot.child('images');
+
+    // Create a reference for the image to be stored
+    Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
+
+    try {
+      // Store the file
+      await referenceImageToUpload.putFile(File(file.path));
+
+      // Success: get the download URL
+      String downloadUrl = await referenceImageToUpload.getDownloadURL();
+
+      // Update the state with the new imageUrl
+      setState(() {
+        imageUrl = downloadUrl;
+      });
+
+      print('Image uploaded successfully. URL: $imageUrl');
+    } catch (error) {
+      // Handle errors
+      print('Error uploading image: $error');
+    }
   }
+
 
   Future<void> _pickPdf() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -201,7 +236,8 @@ class _SignupScreenState extends State<SignupScreen> {
       degree: _degreeController.text,
       degreeYear: _degreeYearController.text,
       degreePdfUrl: _degreePdfFile?.path,
-      imageUrl: _userImageFile!.path,
+      imageUrl: imageUrl,
+
     );
 
     if (res == "success") {
@@ -463,6 +499,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(
                   height: 24,
                 ),
+                /*
                 ElevatedButton(
                   onPressed: _verifyPhoneNumber,
                   child: Text('Verify Mobile No'),
@@ -483,11 +520,18 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(
                   height: 24,
                 ),
+
+                 */
                 ElevatedButton(
-                  onPressed: _pickImage,
+                  onPressed: _pickAndUploadImage,
                   child: Text('Upload Profile Image'),
+
+                  
                 ),
                 if (_userImageFile != null) Image.file(_userImageFile!, height: 100, width: 100),
+                imageUrl.isNotEmpty
+                    ? Image.network(imageUrl)
+                    : Text('No image uploaded yet'),
                 const SizedBox(
                   height: 24,
                 ),

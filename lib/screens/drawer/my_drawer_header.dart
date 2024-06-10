@@ -5,10 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MyHeaderDrawer extends StatelessWidget {
   final String userName;
   final String email;
+  final String imageUrl;
 
   const MyHeaderDrawer({
     required this.userName,
     required this.email,
+    required this.imageUrl,
     Key? key,
   }) : super(key: key);
 
@@ -28,7 +30,10 @@ class MyHeaderDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: AssetImage('assets/images/user.png'),
+                image: imageUrl.isNotEmpty
+                    ? NetworkImage(imageUrl)
+                    : AssetImage('assets/images/user.png') as ImageProvider,
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -59,6 +64,7 @@ class MyDrawerHeaderScreen extends StatefulWidget {
 class _MyDrawerHeader extends State<MyDrawerHeaderScreen> {
   late String _userName = '';
   late String _email = '';
+  late String _imageUrl = '';
 
   @override
   void initState() {
@@ -74,6 +80,7 @@ class _MyDrawerHeader extends State<MyDrawerHeaderScreen> {
       setState(() {
         _userName = userData['username'];
         _email = user.email!;
+        _imageUrl = userData['imageUrl'];
       });
     }
   }
@@ -90,6 +97,7 @@ class _MyDrawerHeader extends State<MyDrawerHeaderScreen> {
             MyHeaderDrawer(
               userName: _userName,
               email: _email,
+              imageUrl: _imageUrl,
             ),
             // Other drawer items
           ],

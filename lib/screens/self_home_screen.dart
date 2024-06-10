@@ -142,6 +142,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
                 MyHeaderDrawer(
                   userName: _userName,
                   email: _email,
+                  imageUrl: _imageUrl,
 
                 ),
                 MyDrawerList(),
