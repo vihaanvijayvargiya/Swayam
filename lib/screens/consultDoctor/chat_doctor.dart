@@ -3,10 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatDoctorScreen extends StatefulWidget {
-  final String currentUserID;
   final String doctorID;
+  final String currentUserID;
 
-  const ChatDoctorScreen({required this.currentUserID, required this.doctorID, Key? key}) : super(key: key);
+  const ChatDoctorScreen({Key? key, required this.doctorID, required this.currentUserID}) : super(key: key);
+
 
   @override
   _ChatDoctorScreenState createState() => _ChatDoctorScreenState();

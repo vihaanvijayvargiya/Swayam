@@ -5,10 +5,11 @@ import 'package:swayam/screens/consultDoctor/search_doctor.dart';
 import 'chat_doctor.dart';
 
 class ProfileDoctorScreen extends StatelessWidget {
-  final String doctorId;
+  final String doctorID;
+  final String currentUserID;
 
 
-  const ProfileDoctorScreen({Key? key, required this.doctorId}) : super(key: key);
+  const ProfileDoctorScreen({Key? key, required this.doctorID, required this.currentUserID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class ProfileDoctorScreen extends StatelessWidget {
         title: const Text('Doctor Profile'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('users').doc(doctorId).get(),
+        future: FirebaseFirestore.instance.collection('users').doc(doctorID).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -35,6 +36,7 @@ class ProfileDoctorScreen extends StatelessWidget {
 
 class ProfileScreen extends StatelessWidget {
   final DocumentSnapshot doctorData;
+
 
   const ProfileScreen({required this.doctorData});
 
@@ -77,6 +79,7 @@ class ProfileScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ChatDoctorScreen(currentUserID: currentUserID, doctorID: doctorID),
                   ),
+
                 );
               },
               icon: Icon(Icons.forward),
@@ -137,3 +140,4 @@ class _ProfileItem extends StatelessWidget {
     );
   }
 }
+

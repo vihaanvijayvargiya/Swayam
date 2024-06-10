@@ -41,6 +41,8 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
     }
   }
 
+
+
   fetchDoctors() async {
     setState(() {
       isLoading = true;
@@ -99,7 +101,7 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfileDoctorScreen(doctorId: doctor.id),
+                  builder: (context) => ProfileDoctorScreen(currentUserID: user!.uid,doctorID: doctor.id),
                 ),
               );
             },
@@ -137,9 +139,9 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProfileDoctorScreen(
-                    doctorId: doctor.id,
-                    currentUserID: user,
-                  ),
+                    doctorID: doctor.id,
+                      currentUserID: user!.uid
+                    ),
                 ),
               );
             },
