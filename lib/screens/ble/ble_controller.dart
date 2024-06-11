@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -9,12 +10,50 @@ class BleController extends GetxController {
   final List<BluetoothDevice> devicesList = [];
 
   final Map<Guid, List<int>> readValues = {};
+  double heartRate = 0.0;
+  double spo2 = 0.0;
+  double ecgValue = 0.0;
+
+  void updateReadings(double newHeartRate, double newSpo2, double newEcgValue) {
+    heartRate = newHeartRate;
+    spo2 = newSpo2;
+    ecgValue = newEcgValue;
+    update(); // Notify listeners of the change
+  }
+
 
   @override
   void onInit() {
     super.onInit();
     _startScan();
+    // Initialize FlutterForegroundTask here
+    FlutterForegroundTask.init(
+      androidNotificationOptions: AndroidNotificationOptions(
+        channelId: 'foreground_service',
+        channelName: 'Foreground Service Notification',
+        channelDescription: 'This notification appears when the foreground service is running.',
+        channelImportance: NotificationChannelImportance.LOW,
+        priority: NotificationPriority.LOW,
+        iconData: const NotificationIconData(
+          resType: ResourceType.mipmap,
+          resPrefix: ResourcePrefix.ic,
+          name: 'launcher',
+        ),
+      ),
+      iosNotificationOptions: IOSNotificationOptions(
+        showNotification: true,
+        playSound: false,
+      ),
+      foregroundTaskOptions: ForegroundTaskOptions(
+        interval: 5000,
+        isOnceEvent: false,
+        autoRunOnBoot: true,
+        allowWakeLock: true,
+        allowWifiLock: true,
+      ),
+    );
   }
+
 
   void _startScan() {
     flutterBlue.connectedDevices

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:swayam/screens/bmi/Score_screen.dart';
 import 'package:swayam/screens/bmi/bmi_index.dart';
 import 'package:swayam/screens/consultDoctor/chat_doctor.dart';
 import 'package:swayam/screens/consultDoctor/search_doctor.dart';
+import 'ble/ble_controller.dart';
 import 'ble/ble_screen.dart';
 import 'medbot.dart';
 import 'login_signup/signin_screen.dart';
@@ -297,6 +300,7 @@ class _HomeContentState extends State<HomeContent> {
   double spo2 = 0.0;
   double ecgValue = 0.0;
 
+
   @override
   void initState() {
     super.initState();
@@ -317,6 +321,9 @@ class _HomeContentState extends State<HomeContent> {
               ecgValue = _convertToFloat(value.sublist(0, 4));
               heartRate = _convertToFloat(value.sublist(0, 4));
               spo2 = _convertToFloat(value.sublist(4, 8));
+              // Update the readings in the controller
+              Get.find<BleController>().updateReadings(heartRate, spo2, ecgValue);
+
             });
           });
         }
