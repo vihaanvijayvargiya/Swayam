@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
     setState(() {
       _selectedIndex = index;
       if (index == 0) {
-        currentPage = DrawerSections.sarthi;
+        currentPage = DrawerSections.chatting;
       } else if (index == 1) {
         currentPage = DrawerSections.home;
       } else if (index == 2) {
@@ -99,7 +100,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
         currentPage = section;
         if (section == DrawerSections.home) {
           _selectedIndex = 1;
-        } else if (section == DrawerSections.sarthi) {
+        } else if (section == DrawerSections.chatting) {
           _selectedIndex = 0;
         } else if (section == DrawerSections.contacts) {
           _selectedIndex = 2;
@@ -282,7 +283,8 @@ enum DrawerSections {
   about,
   ble,
   logout,
-  sarthi, // Added Sarthi enum
+  sarthi,
+  chatting,
 }
 
 class HomeContent extends StatefulWidget {
@@ -299,6 +301,7 @@ class _HomeContentState extends State<HomeContent> {
   double heartRate = 0.0;
   double spo2 = 0.0;
   double ecgValue = 0.0;
+  List<double> ecgValues = [];
 
 
   @override
@@ -321,6 +324,7 @@ class _HomeContentState extends State<HomeContent> {
               ecgValue = _convertToFloat(value.sublist(0, 4));
               heartRate = _convertToFloat(value.sublist(0, 4));
               spo2 = _convertToFloat(value.sublist(4, 8));
+              ecgValues.add(ecgValue);
               // Update the readings in the controller
               Get.find<BleController>().updateReadings(heartRate, spo2, ecgValue);
 
@@ -346,7 +350,7 @@ class _HomeContentState extends State<HomeContent> {
             // ECG Widget - Half of the screen
             Container(
               margin: EdgeInsets.only(bottom: 10.0),
-              height: MediaQuery.of(context).size.height * 0.4, // 40% of the screen height
+              height: MediaQuery.of(context).size.height * 0.2, // 20% of the screen height
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -388,16 +392,67 @@ class _HomeContentState extends State<HomeContent> {
                           ],
                         ),
                         SizedBox(height: 10),
-                        Text(
-                          ecgValue != 0.0 ? 'ECG: $ecgValue' : 'The ECG from device will be shown here',
-                          textAlign: TextAlign.center,
+                        Expanded(
+                          child: LineChart(
+                            LineChartData(
+                              minX: 0,
+                              maxX: ecgValues.length.toDouble() - 1,
+                              minY: ecgValues.isNotEmpty ? ecgValues.reduce((a, b) => a < b ? a : b) - 10 : 0,
+                              maxY: ecgValues.isNotEmpty ? ecgValues.reduce((a, b) => a > b ? a : b) + 10 : 0,
+                              titlesData: FlTitlesData(
+                                bottomTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitles: (value) {
+                                    if (value % 20 == 0) {
+                                      return value.toInt().toString();
+                                    }
+                                    return '';
+                                  },
+                                ),
+                                leftTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitles: (value) {
+                                    return value.toInt().toString();
+                                  },
+                                ),
+                              ),
+                              gridData: FlGridData(
+                                show: true,
+                                horizontalInterval: 20,
+                              ),
+                              borderData: FlBorderData(
+                                show: true,
+                              ),
+                              lineBarsData: [
+                                LineChartBarData(
+                                  spots: List.generate(
+                                    ecgValues.length,
+                                        (index) => FlSpot(index.toDouble(), ecgValues[index]),
+                                  ),
+                                  isCurved: true,
+                                  colors: [Colors.blue],
+                                  barWidth: 3,
+                                  isStrokeCapRound: true,
+                                  dotData: FlDotData(
+                                    show: false,
+                                  ),
+                                  belowBarData: BarAreaData(
+                                    show: false,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
+                        // Text(
+                        //   ecgValue != 0.0 ? 'ECG: $ecgValue' : 'The ECG from device will be shown here',
+                        //   textAlign: TextAlign.center,
+                        // ),
                       ],
                     ),
                   ),
                 ),
               ),
-
             ),
             // Heart Rate Widget - 1/4 of the screen
             Container(

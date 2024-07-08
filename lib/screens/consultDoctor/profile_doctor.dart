@@ -8,7 +8,6 @@ class ProfileDoctorScreen extends StatelessWidget {
   final String doctorID;
   final String currentUserID;
 
-
   const ProfileDoctorScreen({Key? key, required this.doctorID, required this.currentUserID}) : super(key: key);
 
   @override
@@ -18,7 +17,7 @@ class ProfileDoctorScreen extends StatelessWidget {
         title: const Text('Doctor Profile'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('users').doc(doctorID).get(),
+        future: FirebaseFirestore.instance.collection('doctors').doc(doctorID).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -27,7 +26,11 @@ class ProfileDoctorScreen extends StatelessWidget {
             return const Center(child: Text('No data found'));
           }
           var doctorData = snapshot.data!;
-          return ProfileScreen(doctorData: doctorData, doctorID: doctorID, currentUserID: currentUserID,);
+          return ProfileScreen(
+            doctorData: doctorData,
+            doctorID: doctorID,
+            currentUserID: currentUserID,
+          );
         },
       ),
     );
@@ -39,7 +42,6 @@ class ProfileScreen extends StatelessWidget {
   final String doctorID;
   final String currentUserID;
 
-
   const ProfileScreen({required this.doctorData, required this.doctorID, required this.currentUserID});
 
   @override
@@ -49,39 +51,53 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-
             const SizedBox(height: 40),
-            /*
-            if (doctorData['userImage'] != null)
-              CircleAvatar(
-                radius: 70,
-                backgroundImage: NetworkImage(doctorData['userImage']),
-              ),
-            const SizedBox(height: 20),
-
-             */
-            _ProfileItem(title: 'Name', subtitle: doctorData['name'], iconData: Icons.person),
+            _ProfileItem(
+              title: 'Name',
+              subtitle: doctorData['name'],
+              iconData: Icons.person,
+            ),
             const SizedBox(height: 10),
-            _ProfileItem(title: 'Email', subtitle: doctorData['email'], iconData: Icons.mail),
+            _ProfileItem(
+              title: 'Email',
+              subtitle: doctorData['email'],
+              iconData: Icons.mail,
+            ),
             const SizedBox(height: 10),
-            _ProfileItem(title: 'Specialization', subtitle: doctorData['specialization'] ?? 'No specialization', iconData: Icons.medical_services),
+            _ProfileItem(
+              title: 'Specialization',
+              subtitle: doctorData['specialization'] ?? 'No specialization',
+              iconData: Icons.medical_services,
+            ),
             const SizedBox(height: 10),
-            _ProfileItem(title: 'Experience', subtitle: doctorData['experience'], iconData: Icons.work),
+            _ProfileItem(
+              title: 'Experience',
+              subtitle: doctorData['experience'],
+              iconData: Icons.work,
+            ),
             const SizedBox(height: 10),
-            _ProfileItem(title: 'Description', subtitle: doctorData['description'], iconData: Icons.description),
+            _ProfileItem(
+              title: 'Description',
+              subtitle: doctorData['description'],
+              iconData: Icons.description,
+            ),
             const SizedBox(height: 10),
-            _ProfileItem(title: 'Degree', subtitle: doctorData['degree'], iconData: Icons.school),
-            const SizedBox(height: 10),
-            // Buttons
+            _ProfileItem(
+              title: 'Degree',
+              subtitle: doctorData['degree'],
+              iconData: Icons.school,
+            ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ChatDoctorScreen(currentUserID: currentUserID, doctorID: doctorID),
+                    builder: (context) => ChatDoctorScreen(
+                      currentUserID: currentUserID,
+                      doctorID: doctorID,
+                    ),
                   ),
-
                 );
               },
               icon: Icon(Icons.forward),
@@ -142,4 +158,3 @@ class _ProfileItem extends StatelessWidget {
     );
   }
 }
-

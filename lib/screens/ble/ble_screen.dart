@@ -43,7 +43,7 @@ class BleScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ECGScreen(device: data.device),
+                                      builder: (context) => SelfHomeScreen(device: data.device),
                                     ),
                                   );
                                 },

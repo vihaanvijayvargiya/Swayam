@@ -4,14 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swayam/screens/ble/foreground_task_handler.dart';
 import 'package:swayam/screens/self_home_screen.dart';
-import 'package:swayam/screens/doctor_home_screen.dart'; // Import the doctor home screen
 import 'package:swayam/screens/login_signup/signin_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:swayam/screens/home_screen.dart'; // Import the default home screen
-import 'package:flutter_foreground_task/flutter_foreground_task.dart'; // Import foreground task
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 import 'firebase_options.dart';
-// Import the foreground task handler
 
 @pragma('vm:entry-point')
 void startCallback() {
@@ -26,7 +23,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Initialize FlutterForegroundTask without await
   FlutterForegroundTask.init(
     androidNotificationOptions: AndroidNotificationOptions(
       channelId: 'foreground_service',
@@ -71,36 +67,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
-              return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser?.uid)
-                    .get(),
-                builder: (context, userSnapshot) {
-                  if (userSnapshot.connectionState == ConnectionState.done) {
-                    if (userSnapshot.hasData && userSnapshot.data != null) {
-                      var userData = userSnapshot.data!.data() as Map<String, dynamic>?;
-                      if (userData != null && userData.containsKey('userType')) {
-                        var userType = userData['userType'];
-                        if (userType == 'Self') {
-                          return SelfHomeScreen();
-                        } else if (userType == 'Doctor') {
-                          return DoctorHomeScreen();
-                        } else {
-                          return HomeScreen();  // Default home screen
-                        }
-                      } else {
-                        // Log the data for debugging
-                        print("User data: $userData");
-                        return Center(child: Text('User type not specified'));
-                      }
-                    } else {
-                      return Center(child: Text('No user data found'));
-                    }
-                  }
-                  return Center(child: CircularProgressIndicator());
-                },
-              );
+              return SelfHomeScreen();
             } else if (snapshot.hasError) {
               return Center(child: Text('An error occurred'));
             }

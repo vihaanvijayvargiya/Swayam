@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'profile_doctor.dart'; // Ensure this import is correct
+import 'profile_doctor.dart';
 
 class SearchDoctorPage extends StatefulWidget {
   const SearchDoctorPage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
   bool hasUserSearched = false;
   String userName = "";
   User? user;
-  List<QueryDocumentSnapshot>? Doctors;
+  List<QueryDocumentSnapshot>? doctors;
 
   @override
   void initState() {
@@ -41,18 +41,15 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
     }
   }
 
-
-
   fetchDoctors() async {
     setState(() {
       isLoading = true;
     });
     QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('userType', isEqualTo: 'Doctor')
+        .collection('doctors')
         .get();
     setState(() {
-      Doctors = snapshot.docs;
+      doctors = snapshot.docs;
       isLoading = false;
     });
   }
@@ -63,8 +60,7 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
         isLoading = true;
       });
       QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where('userType', isEqualTo: 'Doctor')
+          .collection('doctors')
           .where('name', isGreaterThanOrEqualTo: searchController.text)
           .get();
       setState(() {
@@ -76,12 +72,12 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
   }
 
   Widget doctorList() {
-    return Doctors != null
+    return doctors != null
         ? ListView.builder(
       shrinkWrap: true,
-      itemCount: Doctors!.length,
+      itemCount: doctors!.length,
       itemBuilder: (context, index) {
-        var doctor = Doctors![index];
+        var doctor = doctors![index];
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
@@ -101,7 +97,10 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfileDoctorScreen(currentUserID: user!.uid,doctorID: doctor.id),
+                  builder: (context) => ProfileDoctorScreen(
+                    currentUserID: user!.uid,
+                    doctorID: doctor.id,
+                  ),
                 ),
               );
             },
@@ -139,9 +138,9 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProfileDoctorScreen(
+                    currentUserID: user!.uid,
                     doctorID: doctor.id,
-                      currentUserID: user!.uid
-                    ),
+                  ),
                 ),
               );
             },
@@ -212,7 +211,6 @@ class _SearchDoctorPageState extends State<SearchDoctorPage> {
               ],
             ),
           ),
-
           const SizedBox(height: 40), // Add spacing between search bar and list
           isLoading
               ? Expanded(

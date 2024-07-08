@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swayam/screens/home_screen.dart';
 import 'package:swayam/screens/login_signup/signup_screen.dart';
+import 'package:swayam/screens/self_home_screen.dart';
 
 import '../../resources/AuthMethods.dart';
 import '../../widgets/textfield.dart';
-import '../self_home_screen.dart';
-import '../doctor_home_screen.dart';  // Import the respective home screens
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -34,27 +33,20 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     Map<String, dynamic> res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
+
+    setState(() {
+      _isLoading = false;
+    });
+
     if (res['status'] == 'success') {
       if (context.mounted) {
-        Widget homeScreen;
-        if (res['userType'] == 'Self') {
-          homeScreen = SelfHomeScreen();
-        } else if (res['userType'] == 'Doctor') {
-          homeScreen = DoctorHomeScreen();
-        } else {
-          homeScreen = HomeScreen();  // Default home screen if userType is unknown
-        }
-
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => homeScreen), (route) => false);
-
-        setState(() {
-          _isLoading = false;
-        });
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => SelfHomeScreen()),
+              (route) => false,
+        );
       }
     } else {
-      setState(() {
-        _isLoading = false;
-      });
       if (context.mounted) {
         Fluttertoast.showToast(msg: res['status']);
       }
@@ -64,7 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           padding: MediaQuery.of(context).size.width > 600
@@ -78,13 +69,17 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Icon(Icons.person_outline,size: 150,color: Colors.grey[800],),
                 Container(
                     height: 350,
                     child: Image.asset('assets/images/swayam.png')),
-                Text('Swayam'
-                    '',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 30,color: Color(0x018D8DFF)),),
-                SizedBox(height: 20,),
+                Text(
+                  'Swayam',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 30,
+                      color: Color(0x018D8DFF)),
+                ),
+                SizedBox(height: 20),
                 InputText(
                   hint: 'Enter your email',
                   textInputType: TextInputType.emailAddress,
@@ -118,7 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: !_isLoading
                         ? const Text(
-                      'Log in',style: TextStyle(color: Colors.white,fontSize: 20),
+                      'Log in',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     )
                         : const CircularProgressIndicator(
                       color: Colors.white,
@@ -148,8 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: const Text(
                           ' Signup.',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,color: Color(0xFF008080)
-                          ),
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF008080)),
                         ),
                       ),
                     ),
