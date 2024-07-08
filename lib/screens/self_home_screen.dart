@@ -7,7 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:swayam/screens/bmi/Score_screen.dart';
 import 'package:swayam/screens/bmi/bmi_index.dart';
 import 'package:swayam/screens/consultDoctor/chat_doctor.dart';
-import 'package:swayam/screens/consultDoctor/search_doctor.dart';
+
 import 'ble/ble_controller.dart';
 import 'ble/ble_screen.dart';
 import 'medbot.dart';
@@ -22,6 +22,7 @@ import 'pulse_rate.dart';
 import 'spo2.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:typed_data';// Add this import for Bluetooth functionality
+import 'package:swayam/screens/consultPatient/chat_nav.dart';
 
 class SelfHomeScreen extends StatefulWidget {
   final BluetoothDevice? device; // Add this line to accept a Bluetooth device
@@ -36,6 +37,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
   late String _userName = '';
   late String _email = '';
   late String _currentUserID = '';
+  late String _currentUserEmail= '';
   BluetoothDevice? _device;
   late String _imageUrl = '';
   // Add this line for the Bluetooth device
@@ -64,13 +66,17 @@ class _HomeScreenState extends State<SelfHomeScreen> {
   int _selectedIndex = 1;
 
   List<Widget> _pages() => [
-    SearchDoctorPage(),
+    ChatNav(),
     HomeContent(device: _device), // Pass the device to HomeContent
     Emergency(),
   ];
   void _getCurrentUserID() {
     User? currentUser = FirebaseAuth.instance.currentUser;
     _currentUserID = currentUser?.uid ?? '';
+  }
+  void _getCurrentUserEmail() {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    _currentUserEmail = currentUser?.email ?? '';
   }
 
   void _onItemTapped(int index) {
