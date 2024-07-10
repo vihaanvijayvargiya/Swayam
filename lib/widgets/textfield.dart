@@ -26,6 +26,7 @@ class InputText extends StatelessWidget {
       controller: controller,
       keyboardType: textInputType,
       obscureText: ispass,
+      cursorColor: Colors.teal, // Set the cursor color to teal
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
