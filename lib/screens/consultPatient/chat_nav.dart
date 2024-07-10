@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:swayam/screens/consultPatient/chat_service.dart';
 import 'package:swayam/screens/consultPatient/user_tile.dart';
-
-
 import 'package:swayam/resources/AuthMethods.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:swayam/widgets/textfield.dart';
 
 import 'chat_page.dart';
 
+class ChatNav extends StatefulWidget {
+  @override
+  _ChatNavState createState() => _ChatNavState();
+}
 
-
-class ChatNav extends StatelessWidget {
+class _ChatNavState extends State<ChatNav> {
   final ChatService _chatService = ChatService();
   final AuthMethods _authMethods = AuthMethods();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +30,38 @@ class ChatNav extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Chat"),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _buildSearchBar(),
+          ),
+        ),
       ),
       body: _buildUserList(),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return TextField(
+      controller: _searchController,
+      onChanged: (value) {
+        setState(() {
+          _searchQuery = value.toLowerCase();
+        });
+      },
+      decoration: InputDecoration(
+        hintText: 'Search users...',
+        prefixIcon: Icon(Icons.search, color: Colors.teal),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      cursorColor: Colors.teal,
+      style: TextStyle(color: Colors.teal),
     );
   }
 
@@ -37,11 +78,20 @@ class ChatNav extends StatelessWidget {
         }
 
         List<Map<String, dynamic>> usersData = snapshot.data!;
+        User? currentUser = _authMethods.getCurrentUser();
+        String currentUserEmail = currentUser?.email ?? '';
+
+        usersData = usersData.where((user) {
+          String email = user['email'] ?? '';
+          return email != currentUserEmail && email.toLowerCase().contains(_searchQuery);
+        }).toList();
+
+        if (usersData.isEmpty) {
+          return const Center(child: Text("No users found"));
+        }
 
         return ListView(
-          children: usersData
-              .map<Widget>((userData) => _buildUserItem(userData, context))
-              .toList(),
+          children: usersData.map<Widget>((userData) => _buildUserItem(userData, context)).toList(),
         );
       },
     );
@@ -58,7 +108,6 @@ class ChatNav extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => ChatPage(
                 recieverEmail: userData["email"],
-
               ),
             ),
           );
