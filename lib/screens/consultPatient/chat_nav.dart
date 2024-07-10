@@ -61,7 +61,7 @@ class _ChatNavState extends State<ChatNav> {
         ),
       ),
       cursorColor: Colors.teal,
-      style: TextStyle(color: Colors.teal),
+      style: TextStyle(color: Colors.black),
     );
   }
 
