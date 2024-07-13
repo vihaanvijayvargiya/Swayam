@@ -5,6 +5,7 @@ import 'package:swayam/screens/bmi/Score_screen.dart';
 import 'package:swayam/screens/bmi/bmi_index.dart';
 import 'package:swayam/screens/consultPatient/chat_nav.dart';
 
+
 import 'ble/ble_screen.dart';
 import 'medbot.dart';
 import 'login_signup/signin_screen.dart';
@@ -51,6 +52,7 @@ class _HomeScreenState extends State<DoctorHomeScreen> {
       setState(() {
         _userName = userData['username'];
         _email = user.email!;
+        _imageUrl = userData['imageUrl'];
       });
     }
   }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-class UserTile extends StatelessWidget {
-  final String text;
+class UserTileDoctor extends StatelessWidget {
+  final String name;
+  final String profileImageUrl;
   final void Function()? onTap;
 
-  const UserTile({
+  const UserTileDoctor({
     super.key,
-    required this.text,
+    required this.name,
+    required this.profileImageUrl,
     required this.onTap,
   });
 
@@ -30,11 +32,29 @@ class UserTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(Icons.person, color: Colors.white), // Set icon color to white
+            CircleAvatar(
+              radius: 24, // Adjust the size as needed
+              backgroundImage: profileImageUrl.isNotEmpty
+                  ? NetworkImage(profileImageUrl)
+                  : AssetImage('assets/images/user.png') as ImageProvider, // Fallback image
+              child: ClipOval(
+                child: SizedBox(
+                  width: 48, // Diameter of the CircleAvatar
+                  height: 48,
+                  child: profileImageUrl.isNotEmpty
+                      ? Image.network(
+                    profileImageUrl,
+                    fit: BoxFit.cover, // Ensure the image covers the avatar's bounds
+                    alignment: Alignment.topCenter, // Align the image to the top center
+                  )
+                      : null,
+                ),
+              ),
+            ),
             SizedBox(width: 16), // Increased spacing between icon and text
             Expanded(
               child: Text(
-                text,
+                name,
                 style: TextStyle(
                   color: Colors.white, // Set text color to white
                   fontSize: 18, // Increased font size for better readability

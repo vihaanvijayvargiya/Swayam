@@ -354,7 +354,7 @@ class ProfileDoctor extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Colors.teal,
                             foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
@@ -372,12 +372,12 @@ class ProfileDoctor extends StatelessWidget {
                             // Implement call functionality
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.blue,
+                            backgroundColor: Colors.teal,
+                            foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(color: Colors.blue),
+                              side: BorderSide(color: Colors.teal),
                             ),
                           ),
                         ),

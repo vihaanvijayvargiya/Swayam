@@ -58,6 +58,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
       setState(() {
         _userName = userData['username'];
         _email = user.email!;
+        _imageUrl = userData['imageUrl'];
       });
     }
   }
@@ -66,7 +67,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
   int _selectedIndex = 1;
 
   List<Widget> _pages() => [
-    ChatNav(),
+    ChatNavDoctor(),
     HomeContent(device: _device), // Pass the device to HomeContent
     Emergency(),
   ];
