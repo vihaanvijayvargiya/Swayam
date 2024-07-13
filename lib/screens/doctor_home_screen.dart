@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:swayam/screens/bmi/Score_screen.dart';
 import 'package:swayam/screens/bmi/bmi_index.dart';
+import 'package:swayam/screens/consultPatient/chat_nav.dart';
 
 import 'ble/ble_screen.dart';
-import 'consultDoctor/search_doctor.dart';
 import 'medbot.dart';
 import 'login_signup/signin_screen.dart';
 import 'drawer/my_drawer_header.dart';
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<DoctorHomeScreen> {
   int _selectedIndex = 1;
 
   List<Widget> _pages() => [
-    SearchDoctorPage(),
+    ChatNav(),
     HomeContent(device: _device), // Pass the device to HomeContent
     Emergency(),
   ];
@@ -180,7 +180,7 @@ class _HomeScreenState extends State<DoctorHomeScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.medical_services),
-            label: 'Doctor',
+            label: 'Patient',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

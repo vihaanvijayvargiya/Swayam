@@ -58,9 +58,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Swayam',
+      title: 'Anahata',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

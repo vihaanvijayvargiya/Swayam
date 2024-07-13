@@ -22,7 +22,7 @@ import 'pulse_rate.dart';
 import 'spo2.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:typed_data';// Add this import for Bluetooth functionality
-import 'package:swayam/screens/consultPatient/chat_nav.dart';
+import 'package:swayam/screens/consultDoctor/chat_nav_doctor.dart';
 
 class SelfHomeScreen extends StatefulWidget {
   final BluetoothDevice? device; // Add this line to accept a Bluetooth device
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          "Swayam",
+          "ANAHATA",
           style: TextStyle(
             color: Colors.teal,
             fontWeight: FontWeight.bold,

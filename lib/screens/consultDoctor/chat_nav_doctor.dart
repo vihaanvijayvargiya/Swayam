@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swayam/screens/consultPatient/chat_service.dart';
-import 'package:swayam/screens/consultPatient/user_tile.dart';
+import 'package:swayam/screens/consultDoctor/chat_service_doctor.dart';
+import 'package:swayam/screens/consultDoctor/user_tile_doctor.dart';
 import 'package:swayam/resources/AuthMethods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swayam/widgets/textfield.dart';
-
-import 'chat_page.dart';
+import 'package:swayam/screens/consultDoctor/profile_doctor.dart';
 
 class ChatNav extends StatefulWidget {
   @override
@@ -51,7 +50,7 @@ class _ChatNavState extends State<ChatNav> {
         });
       },
       decoration: InputDecoration(
-        hintText: 'Search self users...',
+        hintText: 'Search doctor...',
         prefixIcon: Icon(Icons.search, color: Colors.teal),
         filled: true,
         fillColor: Colors.white,
@@ -83,7 +82,8 @@ class _ChatNavState extends State<ChatNav> {
 
         usersData = usersData.where((user) {
           String email = user['email'] ?? '';
-          return email != currentUserEmail && email.toLowerCase().contains(_searchQuery);
+          String userType = user['userType'] ?? '';
+          return email != currentUserEmail && email.toLowerCase().contains(_searchQuery) && userType == 'Doctor';
         }).toList();
 
         if (usersData.isEmpty) {
@@ -106,8 +106,8 @@ class _ChatNavState extends State<ChatNav> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChatPage(
-                recieverEmail: userData["email"],
+              builder: (context) => ProfileDoctor(
+                doctorData: userData,
               ),
             ),
           );
