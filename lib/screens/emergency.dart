@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:keyboard_hider/keyboard_hider.dart';
 
+
 import '../widgets/cust_icon.dart';
 
 
@@ -42,7 +43,7 @@ class _EmergencyState extends State<Emergency> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 10),
+            padding: const EdgeInsets.only(top: 20, bottom: 6),
             child: Center(
               child: Text(
                 'Emergency Services',
@@ -56,7 +57,7 @@ class _EmergencyState extends State<Emergency> {
         ),
         backgroundColor: Colors.white,
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 15),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -220,15 +221,15 @@ class _EmergencyState extends State<Emergency> {
                   child: Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: Text(
-                          'Women Helpline-(Domestic Abuse)  ',
+                          'Women Helpline-Domestic Abuse',
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
                       Expanded(child: Container()),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: IconButton(
                           onPressed: () {
                             _launchPhoneCall('181');
@@ -252,7 +253,7 @@ class _EmergencyState extends State<Emergency> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 18.0),
                         child: Text(
-                          'Children In Difficult Situation  ',
+                          'Children In Difficulty',
                           style: TextStyle(fontSize: 17),
                         ),
                       ),

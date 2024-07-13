@@ -321,9 +321,11 @@ class ProfileDoctor extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    doctorData['specialization'] ?? 'Primary Physician',
+                    '${doctorData['currentWork']}',
+                    textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey, fontSize: 16),
                   ),
                   SizedBox(height: 8),
@@ -333,7 +335,7 @@ class ProfileDoctor extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    '${doctorData['specialization']}, ${doctorData['currentWork']}',
+                    '${doctorData['specialization']}',
                     style: TextStyle(color: Colors.grey[600], fontSize: 16),
                   ),
                   SizedBox(height: 16),
@@ -354,7 +356,7 @@ class ProfileDoctor extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Colors.teal,
                             foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
@@ -372,12 +374,12 @@ class ProfileDoctor extends StatelessWidget {
                             // Implement call functionality
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.blue,
+                            backgroundColor: Colors.teal,
+                            foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(color: Colors.blue),
+                              side: BorderSide(color: Colors.teal),
                             ),
                           ),
                         ),

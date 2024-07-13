@@ -4,7 +4,6 @@ import 'package:swayam/screens/consultPatient/user_tile.dart';
 import 'package:swayam/resources/AuthMethods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swayam/widgets/textfield.dart';
-
 import 'chat_page.dart';
 
 class ChatNav extends StatefulWidget {
@@ -83,7 +82,8 @@ class _ChatNavState extends State<ChatNav> {
 
         usersData = usersData.where((user) {
           String email = user['email'] ?? '';
-          return email != currentUserEmail && email.toLowerCase().contains(_searchQuery);
+          String userType = user['userType'] ?? '';
+          return email != currentUserEmail && email.toLowerCase().contains(_searchQuery) && userType == 'Self';
         }).toList();
 
         if (usersData.isEmpty) {
@@ -98,11 +98,13 @@ class _ChatNavState extends State<ChatNav> {
   }
 
   Widget _buildUserItem(Map<String, dynamic> userData, BuildContext context) {
-    String email = userData["email"] ?? 'No email';
+    String name = userData["name"] ?? 'No name';
+    String profileImageUrl = userData["imageUrl"] ?? '';
     return UserTile(
-      text: email,
+      name: name,
+      profileImageUrl: profileImageUrl,
       onTap: () {
-        if (email != 'No email') {
+        if (name != 'No name') {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -112,7 +114,7 @@ class _ChatNavState extends State<ChatNav> {
             ),
           );
         } else {
-          print("Invalid email address"); // Logging invalid email cases
+          print("Invalid name"); // Logging invalid name cases
         }
       },
     );

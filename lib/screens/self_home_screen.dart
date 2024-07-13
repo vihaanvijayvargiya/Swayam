@@ -7,13 +7,14 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:swayam/screens/bmi/Score_screen.dart';
 import 'package:swayam/screens/bmi/bmi_index.dart';
 import 'package:swayam/screens/consultDoctor/chat_doctor.dart';
+import 'package:swayam/screens/emergency_contacts_sms.dart';
 
 import 'ble/ble_controller.dart';
 import 'ble/ble_screen.dart';
 import 'medbot.dart';
 import 'login_signup/signin_screen.dart';
 import 'drawer/my_drawer_header.dart';
-import 'emergency.dart';
+//import 'emergency.dart';
 import 'drawer/profile.dart';
 import 'drawer/about.dart';
 import 'drawer/notifications.dart';
@@ -58,6 +59,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
       setState(() {
         _userName = userData['username'];
         _email = user.email!;
+        _imageUrl = userData['imageUrl'];
       });
     }
   }
@@ -66,9 +68,9 @@ class _HomeScreenState extends State<SelfHomeScreen> {
   int _selectedIndex = 1;
 
   List<Widget> _pages() => [
-    ChatNav(),
+    ChatNavDoctor(),
     HomeContent(device: _device), // Pass the device to HomeContent
-    Emergency(),
+    EmergencyContactsScreen(),
   ];
   void _getCurrentUserID() {
     User? currentUser = FirebaseAuth.instance.currentUser;
@@ -87,7 +89,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
       } else if (index == 1) {
         currentPage = DrawerSections.home;
       } else if (index == 2) {
-        currentPage = DrawerSections.contacts;
+        currentPage = DrawerSections.emergencycontacts;
       }
     });
   }
@@ -108,7 +110,7 @@ class _HomeScreenState extends State<SelfHomeScreen> {
           _selectedIndex = 1;
         } else if (section == DrawerSections.chatting) {
           _selectedIndex = 0;
-        } else if (section == DrawerSections.contacts) {
+        } else if (section == DrawerSections.emergencycontacts) {
           _selectedIndex = 2;
         }
       });
@@ -291,6 +293,7 @@ enum DrawerSections {
   logout,
   sarthi,
   chatting,
+  emergencycontacts,
 }
 
 class HomeContent extends StatefulWidget {
@@ -356,7 +359,7 @@ class _HomeContentState extends State<HomeContent> {
             // ECG Widget - Half of the screen
             Container(
               margin: EdgeInsets.only(bottom: 10.0),
-              height: MediaQuery.of(context).size.height * 0.2, // 20% of the screen height
+              height: MediaQuery.of(context).size.height * 0.3, // 20% of the screen height
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -386,7 +389,7 @@ class _HomeContentState extends State<HomeContent> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Icon(Icons.show_chart, size: 24, color: Colors.blue), // Icon for ECG
-                            SizedBox(width: 8),
+                            SizedBox(height:20,width: 8),
                             Text(
                               'ECG',
                               style: TextStyle(

@@ -6,12 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swayam/widgets/textfield.dart';
 import 'package:swayam/screens/consultDoctor/profile_doctor.dart';
 
-class ChatNav extends StatefulWidget {
+class ChatNavDoctor extends StatefulWidget {
   @override
   _ChatNavState createState() => _ChatNavState();
 }
 
-class _ChatNavState extends State<ChatNav> {
+class _ChatNavState extends State<ChatNavDoctor> {
   final ChatService _chatService = ChatService();
   final AuthMethods _authMethods = AuthMethods();
   final TextEditingController _searchController = TextEditingController();
@@ -98,11 +98,13 @@ class _ChatNavState extends State<ChatNav> {
   }
 
   Widget _buildUserItem(Map<String, dynamic> userData, BuildContext context) {
-    String email = userData["email"] ?? 'No email';
-    return UserTile(
-      text: email,
+    String name = userData["name"] ?? 'No name';
+    String profileImageUrl = userData["imageUrl"] ?? '';
+    return UserTileDoctor(
+      name: name,
+      profileImageUrl: profileImageUrl,
       onTap: () {
-        if (email != 'No email') {
+        if (name != 'No name') {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -112,7 +114,7 @@ class _ChatNavState extends State<ChatNav> {
             ),
           );
         } else {
-          print("Invalid email address"); // Logging invalid email cases
+          print("Invalid name"); // Logging invalid name cases
         }
       },
     );
