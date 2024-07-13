@@ -1089,7 +1089,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _emailController.text.isEmpty || _usernameController.text.isEmpty ||
             _passwordController.text.isEmpty || _dobController.text.isEmpty ||
             _weightController.text.isEmpty || _heightController.text.isEmpty ||
-            _mobileController.text.isEmpty || _userImageFile == null )) {
+            _mobileController.text.isEmpty || imageUrl.isEmpty )) {
       Fluttertoast.showToast(msg: "Please fill all fields");
       return;
     }
@@ -1100,7 +1100,7 @@ class _SignupScreenState extends State<SignupScreen> {
             _experienceController.text.isEmpty || _descriptionController.text.isEmpty ||
             _specializationController.text.isEmpty || _currentWorkController.text.isEmpty ||
             _degreeController.text.isEmpty || _degreeYearController.text.isEmpty ||
-            _mobileController.text.isEmpty || _degreePdfFile == null || _userImageFile == null )) {
+            _mobileController.text.isEmpty || _degreePdfFile == null || imageUrl.isEmpty )) {
 
       print("Doctor User - Missing Fields Detected");
       print("Email: ${_emailController.text}");
@@ -1198,8 +1198,50 @@ class _SignupScreenState extends State<SignupScreen> {
                 Container(
                     height: 300,
                     child: Image.asset('assets/images/anahata.png')),
-                Text('Anahata', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30, color: Color(0x018D8DFF)),),
-                SizedBox(height: 20,),
+
+                Text(
+                  'Anahata',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 30,
+                      color: Colors.teal),
+                ),
+                SizedBox(height: 20),
+
+                GestureDetector(
+                  onTap: _pickAndUploadImage,
+                  child: ClipOval(
+                    child: Container(
+                      height: 150, // Increased size
+                      width: 150,  // Increased size
+                      child: _userImageFile != null
+                          ? Image.file(
+                        _userImageFile!,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter, // Focus on the top center
+                      )
+                          : imageUrl.isNotEmpty
+                          ? Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter, // Focus on the top center
+                      )
+                          : Container(
+                        color: Colors.grey[200],
+                        child: Icon(
+                          Icons.add_a_photo,
+                          color: Colors.grey[800],
+                          size: 50,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+
+
                 Container(
                   color: Colors.white,
                   child: DropdownButtonFormField<String>(
@@ -1241,6 +1283,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
+
 
                 const SizedBox(
                   height: 24,
@@ -1430,7 +1473,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(
                   height: 24,
                 ),
-                */
+
 
 
                 ElevatedButton(
@@ -1445,6 +1488,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(
                   height: 24,
                 ),
+
+                 */
 
 
                 InkWell(

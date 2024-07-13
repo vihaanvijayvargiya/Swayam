@@ -161,6 +161,8 @@ class _ProfileItem extends StatelessWidget {
 }
 */
 
+
+/*
 import 'package:flutter/material.dart';
 import 'package:swayam/screens/consultDoctor/chat_page_doctor.dart';
 
@@ -268,6 +270,129 @@ class ProfileDoctor extends StatelessWidget {
                       "Back",
                       style: TextStyle(fontSize: 18),
                     ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+ */
+
+
+import 'package:flutter/material.dart';
+import 'package:swayam/screens/consultDoctor/chat_page_doctor.dart';
+
+class ProfileDoctor extends StatelessWidget {
+  final Map<String, dynamic> doctorData;
+
+  ProfileDoctor({required this.doctorData});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text('Details', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              child: Image.network(
+                doctorData['imageUrl'] ?? 'https://via.placeholder.com/300',
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+                height: 300,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    doctorData['specialization'] ?? 'Primary Physician',
+                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Dr. ${doctorData['name']}',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '${doctorData['specialization']}, ${doctorData['currentWork']}',
+                    style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.chat_bubble_outline),
+                          label: Text('Chat'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatPage(
+                                  recieverEmail: doctorData['email'],
+                                ),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.call),
+                          label: Text('Call'),
+                          onPressed: () {
+                            // Implement call functionality
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(color: Colors.blue),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    'Doctor Bio',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    doctorData['description'] ?? 'No bio available.',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[800]),
                   ),
                 ],
               ),
