@@ -1,6 +1,6 @@
 # swayam
 
-Flutter app for wearable ecg monitoring device.
+Flutter app for wearable ecg monitoring device powered with bluetooth connectivity and Firebase.
 
 ## Getting Started
 
